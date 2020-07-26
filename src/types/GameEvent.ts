@@ -1,5 +1,3 @@
-import { User } from './User';
-
 export class GameEvent {
     id: number = 0;
     name: string = "";
@@ -10,4 +8,8 @@ export class GameEvent {
     slots: number = 0;
     freeSlots: number = 0;
     owner: number | undefined = undefined;
+
+    constructor(userId: number | undefined = undefined) {
+        this.owner = userId;
+    }
 }

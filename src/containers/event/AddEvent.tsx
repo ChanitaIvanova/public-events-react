@@ -16,7 +16,7 @@ class AddEvent extends Component {
     constructor(props: any) {
         super(props);
         this.props = props;
-        this.state = new GameEvent();
+        this.state = new GameEvent(this.props.loggedInUser);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
       }
@@ -30,7 +30,6 @@ class AddEvent extends Component {
 
     handleSubmit(event: FormEvent) {
         event.preventDefault();
-        this.state.owner = this.props.loggedInUser;
         this.props.addGameEvent(this.state);
         this.setState(new GameEvent());
     }
