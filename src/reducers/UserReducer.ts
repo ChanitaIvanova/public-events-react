@@ -1,23 +1,24 @@
-import { SIGN_IN, GET_USER, LOG_IN, IS_LOGGED_IN, LOG_OUT } from '../actions/ActionTypes'
+import { SIGN_IN, LOG_IN, LOG_OUT } from '../actions/ActionTypes'
 import { User } from '../types/User'
 
 const initialUserState: any = {
-  user: new User(),
+  users: [],
   isUserLogged: false
 }
 
 const setupUser = (state: any = initialUserState, action: any={}) => {
   switch (action.type) {
     case SIGN_IN:
-      return Object.assign({}, state, { user: action.payload });
+      const countUsers = state.users.length;
+      let user: User = action.payload;
+      user.id = countUsers;
+      let users: User[] = [...state.users];
+      users.push(user);
+      return Object.assign({}, state, { users: users });
     case LOG_IN:
       return Object.assign({}, state, { isUserLogged: true });
     case LOG_OUT:
       return Object.assign({}, state, { isUserLogged: false });
-    case GET_USER:
-      return state.user;
-    case IS_LOGGED_IN:
-      return state.isUserLogged;
     default:
       return state
   }

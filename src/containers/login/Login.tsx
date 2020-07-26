@@ -3,6 +3,7 @@ import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { logIn } from '../../actions/user/UserActions'
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { User } from '../../types/User'
 
 function mapDispatchToProps(dispatch: any) {
   return {
@@ -18,7 +19,8 @@ class LogIn extends Component {
       this.props = props;
       this.state = {
         password: "",
-        email: ""
+        email: "", 
+        userIsMissing: false
       };
       this.handleChange = this.handleChange.bind(this);
       this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,8 +32,13 @@ class LogIn extends Component {
 
   handleSubmit(event: FormEvent) {
       event.preventDefault();
-      if (this.props.user.email === this.state.email && this.props.user.password === this.state.password) {
+      const user = this.props.users.find((user: User) => {
+        return user.email === this.state.email && user.password === this.state.password;
+      })
+      if (user) {
         this.props.logIn();
+      } else {
+        this.setState({ userIsMissing: true });
       }
   }
 
@@ -48,6 +55,9 @@ class LogIn extends Component {
     return (
       <div className="Login">
         <h1>Log In</h1>
+        {this.state.userIsMissing &&
+          <div className="card-panel teal lighten-2">There is no such user</div>
+        }
         <form onSubmit={this.handleSubmit}>
           <FormGroup controlId="email">
             <FormLabel >Email</FormLabel>
@@ -76,7 +86,7 @@ class LogIn extends Component {
 }
 function mapStateToProps(state: any) {
   return { isUserLogged: state.setupUser.isUserLogged,
-           user: state.setupUser.user 
+           users: state.setupUser.users
   }
 }
 
