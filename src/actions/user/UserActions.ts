@@ -6,8 +6,8 @@ export function signIn(user: User) {
     return { type: SIGN_IN, payload: user };
 }
 
-export function logIn() {
-    return { type: LOG_IN};
+export function logIn(id: number) {
+    return { type: LOG_IN, payload: id};
 }
 
 export function logOut() {

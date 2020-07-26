@@ -11,7 +11,7 @@ function mapDispatchToProps(dispatch: any) {
 }
 
 class AddEvent extends Component {
-    state: Readonly<GameEvent>;
+    state: GameEvent;
     props: Readonly<any>;
     constructor(props: any) {
         super(props);
@@ -24,11 +24,13 @@ class AddEvent extends Component {
     validateForm() {
         return this.state.name.length > 0 && this.state.game.length > 0 
         && this.state.city.length > 0 && this.state.address.length > 0
-        && this.state.slots > 0 && this.state.freeSlots > 0;
+        && this.state.slots > 0 && this.state.freeSlots > 0 
+        && this.state.freeSlots <= this.state.slots;
     }
 
     handleSubmit(event: FormEvent) {
         event.preventDefault();
+        this.state.owner = this.props.loggedInUser;
         this.props.addGameEvent(this.state);
         this.setState(new GameEvent());
     }
@@ -103,7 +105,8 @@ class AddEvent extends Component {
     }
 }
 function mapStateToProps(state: any) {
-    return { isUserLogged: state.setupUser.isUserLogged
+    return { isUserLogged: state.setupUser.isUserLogged,
+             loggedInUser: state.setupUser.loggedInUser
     }
 }
 const AddEventForm = connect(

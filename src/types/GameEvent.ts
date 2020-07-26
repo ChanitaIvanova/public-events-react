@@ -1,3 +1,5 @@
+import { User } from './User';
+
 export class GameEvent {
     id: number = 0;
     name: string = "";
@@ -6,5 +8,6 @@ export class GameEvent {
     address: string = "";
     user: string = "";
     slots: number = 0;
-    freeSlots: number = 0
+    freeSlots: number = 0;
+    owner: number | undefined = undefined;
 }

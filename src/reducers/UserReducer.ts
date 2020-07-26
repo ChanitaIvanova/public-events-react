@@ -3,7 +3,8 @@ import { User } from '../types/User'
 
 const initialUserState: any = {
   users: [],
-  isUserLogged: false
+  isUserLogged: false,
+  loggedInUser: undefined 
 }
 
 const setupUser = (state: any = initialUserState, action: any={}) => {
@@ -16,9 +17,9 @@ const setupUser = (state: any = initialUserState, action: any={}) => {
       users.push(user);
       return Object.assign({}, state, { users: users });
     case LOG_IN:
-      return Object.assign({}, state, { isUserLogged: true });
+      return Object.assign({}, state, { isUserLogged: true,  loggedInUser: action.payload});
     case LOG_OUT:
-      return Object.assign({}, state, { isUserLogged: false });
+      return Object.assign({}, state, { isUserLogged: false, loggedInUser: undefined });
     default:
       return state
   }

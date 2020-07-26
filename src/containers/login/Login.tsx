@@ -7,7 +7,7 @@ import { User } from '../../types/User'
 
 function mapDispatchToProps(dispatch: any) {
   return {
-      logIn: () => dispatch(logIn())
+      logIn: (id: number) => dispatch(logIn(id))
   };
 }
 
@@ -36,7 +36,7 @@ class LogIn extends Component {
         return user.email === this.state.email && user.password === this.state.password;
       })
       if (user) {
-        this.props.logIn();
+        this.props.logIn(user.id);
       } else {
         this.setState({ userIsMissing: true });
       }
