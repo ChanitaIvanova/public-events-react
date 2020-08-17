@@ -1,116 +1,144 @@
-import React, { FormEvent, Component, ChangeEvent } from "react";
+// eslint-disable-next-line no-unused-vars
+import React, { useReducer, FormEvent, ChangeEvent } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import { addGameEvent } from '../../actions/GameEventActions'
+import { addGameEvent } from "../../actions/GameEventActions";
 import { connect } from "react-redux";
-import { GameEvent } from '../../types/GameEvent'
+import { GameEvent } from "../../types/GameEvent";
 
+/**
+ * Maps the reducer function to the properties of the component
+ * @param {any} dispatch method that will dispatch the function to the reducer
+ * @return {any} Object that will contain the new properties
+ */
 function mapDispatchToProps(dispatch: any) {
     return {
-        addGameEvent: (event: GameEvent) => dispatch(addGameEvent(event))
+        addGameEvent: (event: GameEvent) => dispatch(addGameEvent(event)),
     };
 }
 
-class AddEvent extends Component {
-    state: GameEvent;
-    props: Readonly<any>;
-    constructor(props: any) {
-        super(props);
-        this.props = props;
-        this.state = new GameEvent(this.props.loggedInUser);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-      }
+const initialState = new GameEvent();
 
-    validateForm() {
-        return this.state.name.length > 0 && this.state.game.length > 0 
-        && this.state.city.length > 0 && this.state.address.length > 0
-        && this.state.slots > 0 && this.state.freeSlots > 0 
-        && this.state.freeSlots <= this.state.slots;
+/**
+ * Apply different changes on the state
+ * @param {GameEvent} state the current state
+ * @param {any} action action that will be applied on the state
+ * @return {GameEvcent} returns the new state
+ */
+function reducer(state: GameEvent, action: { type: string; payload?: any }) {
+    switch (action.type) {
+        case "updateState":
+            return { ...state, [action.payload.name]: action.payload.value };
+        case "clearState":
+            const newState = new GameEvent();
+            return newState;
+        default:
+            return state;
     }
+}
 
-    handleSubmit(event: FormEvent) {
-        event.preventDefault();
-        this.props.addGameEvent(this.state);
-        this.setState(new GameEvent());
-    }
-
-    handleChange(event: ChangeEvent<any>) {
-        this.setState({ [event.target.id]: event.target.value });
-    }
-
-    render() {
-        if (!this.props.isUserLogged) {
-            return (<div>Please log in!</div>);
-        }
+const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent }: any) => {
+    const [state, setState] = useReducer(reducer, initialState);
+    const validateForm = () => {
         return (
-            <div className="AddEvent">
-                <h1>Add Event</h1>
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId="name">
-                        <FormLabel>Event Name</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type="text"
-                            value={this.state.name}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="game">
-                        <FormLabel>Game Name</FormLabel>
-                        <FormControl
-                            type="text"
-                            value={this.state.game}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="city">
-                        <FormLabel>City</FormLabel>
-                        <FormControl
-                            type="text"
-                            value={this.state.city}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="address">
-                        <FormLabel>Address</FormLabel>
-                        <FormControl
-                            value={this.state.address}
-                            onChange={this.handleChange}
-                            type="text"
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="slots">
-                        <FormLabel>Slots</FormLabel>
-                        <FormControl
-                            value={this.state.slots}
-                            onChange={this.handleChange}
-                            type="number"
-                        />
-                    </FormGroup>
-                    <FormGroup controlId="freeSlots">
-                        <FormLabel>Free Slots</FormLabel>
-                        <FormControl
-                            value={this.state.freeSlots}
-                            onChange={this.handleChange}
-                            type="number"
-                        />
-                    </FormGroup>
-                    <Button block disabled={!this.validateForm()} type="submit">
-                        Create event
-                    </Button>
-                </form>
-            </div>
+            state.name.length > 0 &&
+            state.game.length > 0 &&
+            state.city.length > 0 &&
+            state.address.length > 0 &&
+            state.slots > 0 &&
+            state.freeSlots > 0 &&
+            state.freeSlots <= state.slots
         );
+    };
+
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault();
+        addGameEvent(state);
+        setState({ type: "clearState" });
+    };
+
+    const handleChange = (event: ChangeEvent<any>) => {
+        setState({
+            type: "updateState",
+            payload: { name: [event.target.id], value: event.target.value },
+        });
+    };
+
+    if (!isUserLogged) {
+        return <div>Please log in!</div>;
     }
-}
+
+    return (
+        <div className='AddEvent'>
+            <h1>Add Event</h1>
+            <form onSubmit={handleSubmit}>
+                <FormGroup controlId='name'>
+                    <FormLabel>Event Name</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type='text'
+                        value={state.name}
+                        onChange={handleChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId='game'>
+                    <FormLabel>Game Name</FormLabel>
+                    <FormControl
+                        type='text'
+                        value={state.game}
+                        onChange={handleChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId='city'>
+                    <FormLabel>City</FormLabel>
+                    <FormControl
+                        type='text'
+                        value={state.city}
+                        onChange={handleChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId='address'>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl
+                        value={state.address}
+                        onChange={handleChange}
+                        type='text'
+                    />
+                </FormGroup>
+                <FormGroup controlId='slots'>
+                    <FormLabel>Slots</FormLabel>
+                    <FormControl
+                        value={state.slots}
+                        onChange={handleChange}
+                        type='number'
+                    />
+                </FormGroup>
+                <FormGroup controlId='freeSlots'>
+                    <FormLabel>Free Slots</FormLabel>
+                    <FormControl
+                        value={state.freeSlots}
+                        onChange={handleChange}
+                        type='number'
+                    />
+                </FormGroup>
+                <Button block disabled={!validateForm()} type='submit'>
+                    Create event
+                </Button>
+            </form>
+        </div>
+    );
+};
+/**
+ * Maps values of the state to properties of the component
+ * @param {any} state the current state
+ * @return {any} new object that contains part of the properies passed
+ *  to the component
+ */
 function mapStateToProps(state: any) {
-    return { isUserLogged: state.setupUser.isUserLogged,
-             loggedInUser: state.setupUser.loggedInUser
-    }
+    return {
+        isUserLogged: state.setupUser.isUserLogged,
+        loggedInUser: state.setupUser.loggedInUser,
+    };
 }
-const AddEventForm = connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(AddEvent);
-  
+const AddEventForm = connect(mapStateToProps, mapDispatchToProps)(AddEvent);
+
 export default AddEventForm;

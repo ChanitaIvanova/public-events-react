@@ -1,62 +1,66 @@
-import React, { Component } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { GameEvent } from '../../types/GameEvent'
+// eslint-disable-next-line no-unused-vars
+import { GameEvent } from "../../types/GameEvent";
+import withHeaderAndContentData from "../common/withHeaderAndContentData";
+// eslint-disable-next-line no-unused-vars
+import { HeaderData } from "../common/table.interfaces";
+import Table from "../common/Table";
+import DeleteEvent from "../event/DeleteEvent";
 
+const headerData: HeaderData = {
+    tableName: "Available events",
+    headers: [
+        {
+            key: "name",
+            name: "Event Name",
+        },
+        {
+            key: "game",
+            name: "Game Name",
+        },
+        {
+            key: "city",
+            name: "City",
+        },
+        {
+            key: "address",
+            name: "Address",
+        },
+        {
+            key: "slots",
+            name: "Slots",
+        },
+        {
+            key: "freeSlots",
+            name: "Free Slots",
+        },
+        {
+            key: "actions",
+            name: "Actions",
+        },
+    ],
+};
 
-class ListEvenetsComponent extends Component {
-    state: {events: GameEvent[]} = {events: []};
-    props: Readonly<any>;
-    constructor(props: any) {
-        super(props);
-        this.props = props;
-        this.state.events = this.props.events.filter((event: GameEvent) => {
-            return event.freeSlots > 0;
-        })
-      }
+const mapStateToProps = (state: any) => {
+    return {
+        contentData: state.gameEvents.events
+            .filter((event: GameEvent) => {
+                return event.freeSlots > 0;
+            })
+            .map((event: any) => {
+                return {
+                    ...event,
+                    actions: <DeleteEvent eventId={event.id}></DeleteEvent>,
+                };
+            }),
+    };
+};
 
-    render() {
-        if (this.state.events.length === 0) {
-            return (<div>There are no events available</div>);
-        }
-        const tableRows = this.state.events.map((event: GameEvent) =>
-            <tr key={event.id}>
-                <td>{event.name}</td>
-                <td>{event.game}</td>
-                <td>{event.city}</td>
-                <td>{event.address}</td>
-                <td>{event.slots}</td>
-                <td>{event.freeSlots}</td>
-            </tr>
-        );
-        return (
-            <div>
-                <h1>Available events</h1>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Name</th>
-                            <th>Game Name</th>
-                            <th>City</th>
-                            <th>Address</th>
-                            <th>Slots</th>
-                            <th>Free slots</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {tableRows}
-                    </tbody>
-                </table>
-            </div>
-        );
-    }
-}
-function mapStateToProps(state: any) {
-    return { events: state.gameEvents.events
-    }
-}
 const ListEvenets = connect(
     mapStateToProps,
+    // eslint-disable-next-line comma-dangle
     null
-  )(ListEvenetsComponent);
-  
+)(withHeaderAndContentData(headerData)(Table));
+
 export default ListEvenets;
