@@ -18,7 +18,7 @@ const EditEvent = ({ event }: any) => {
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
-            dismissible: false,
+            dismissible: true,
             startingTop: "4%",
             endingTop: "10%",
         };

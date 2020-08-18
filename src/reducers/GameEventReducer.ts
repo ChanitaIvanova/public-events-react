@@ -2,6 +2,7 @@ import {
     ADD_GAME_EVENT,
     DELETE_EVENT,
     EDIT_EVENT,
+    RESERVE_SLOT,
 } from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { GameEvent } from "../types/GameEvent";
@@ -24,6 +25,14 @@ const gameEvents = (events: any = initialState.events, action: any = {}) => {
             return events.map((event: GameEvent) => {
                 if (event.id === action.payload.id) {
                     return { ...event, ...action.payload };
+                }
+                return event;
+            });
+        case RESERVE_SLOT:
+            const { eventId } = action.payload;
+            return events.map((event: GameEvent) => {
+                if (event.id === eventId) {
+                    return { ...event, freeSlots: event.freeSlots - 1 };
                 }
                 return event;
             });

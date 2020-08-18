@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import "./Home.css";
 import ListEvenets from "../event/ListEvents";
 import M from "materialize-css";
-import { Divider } from "react-materialize";
 
 const Home = () => {
     const isUserLogged = useSelector(

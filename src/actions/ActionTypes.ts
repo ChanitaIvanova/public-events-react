@@ -6,3 +6,4 @@ export const GET_USER = "GET_USER";
 export const ADD_GAME_EVENT = "ADD_GAME_EVENT";
 export const DELETE_EVENT = "DELETE_EVENT";
 export const EDIT_EVENT = "EDIT_EVENT";
+export const RESERVE_SLOT = "RESERVE_SLOT";

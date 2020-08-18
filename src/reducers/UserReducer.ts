@@ -1,10 +1,11 @@
-import { SIGN_IN, LOG_IN, LOG_OUT } from "../actions/ActionTypes";
+import { SIGN_IN, LOG_IN, LOG_OUT, RESERVE_SLOT } from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
-import { initialState } from "./initialState";
+// eslint-disable-next-line no-unused-vars
+import { initialState, UserState } from "./initialState";
 
 const setupUser = (
-    userState: any = initialState.userState,
+    userState: UserState = initialState.userState,
     // eslint-disable-next-line comma-dangle
     action: any = {}
 ) => {
@@ -26,6 +27,15 @@ const setupUser = (
                 isUserLogged: false,
                 loggedInUser: undefined,
             });
+        case RESERVE_SLOT:
+            const { eventId, userId } = action.payload;
+            const newUsers = userState.users.map((user: User) => {
+                if (user.id === userId) {
+                    return { ...user, events: [...user.events, eventId] };
+                }
+                return user;
+            });
+            return { ...userState, users: newUsers };
         default:
             return userState;
     }
