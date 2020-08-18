@@ -133,10 +133,10 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent }: any) => {
  * @return {any} new object that contains part of the properies passed
  *  to the component
  */
-function mapStateToProps(state: any) {
+function mapStateToProps({ userState }: any) {
     return {
-        isUserLogged: state.setupUser.isUserLogged,
-        loggedInUser: state.setupUser.loggedInUser,
+        isUserLogged: userState.isUserLogged,
+        loggedInUser: userState.loggedInUser,
     };
 }
 const AddEventForm = connect(mapStateToProps, mapDispatchToProps)(AddEvent);

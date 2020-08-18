@@ -125,8 +125,8 @@ class AppComponent extends Component {
  * @return {any} object that describes the new properties passed
  * to the component.
  */
-function mapStateToProps(state: any) {
-    return { isUserLogged: state.setupUser.isUserLogged };
+function mapStateToProps({ userState }: any) {
+    return { isUserLogged: userState.isUserLogged };
 }
 
 const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);

@@ -42,9 +42,9 @@ const headerData: HeaderData = {
     ],
 };
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = ({ events }: any) => {
     return {
-        contentData: state.gameEvents.events
+        contentData: events
             .filter((event: GameEvent) => {
                 return event.freeSlots > 0;
             })

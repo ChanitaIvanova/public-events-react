@@ -1,16 +1,13 @@
 import { createStore, combineReducers } from "redux";
 import setupUser from "../reducers/UserReducer";
 import gameEvents from "../reducers/GameEventReducer";
-import { loadState, saveState } from './LocalStorage'
+import { loadState, saveState } from "./LocalStorage";
 
-const reducer = combineReducers({setupUser, gameEvents});
+const reducer = combineReducers({ userState: setupUser, events: gameEvents });
 const persistedState = loadState();
-const store = createStore(
-    reducer,
-    persistedState
-);
+const store = createStore(reducer, persistedState);
 store.subscribe(() => {
-  saveState(store.getState());
+    saveState(store.getState());
 });
 
 export default store;

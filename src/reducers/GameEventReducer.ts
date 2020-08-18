@@ -1,28 +1,23 @@
 import { ADD_GAME_EVENT, DELETE_EVENT } from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { GameEvent } from "../types/GameEvent";
+import { initialState } from "./initialState";
 
-const initialEventsState: any = {
-    events: [],
-};
-
-const gameEvents = (state: any = initialEventsState, action: any = {}) => {
+const gameEvents = (events: any = initialState.events, action: any = {}) => {
     switch (action.type) {
         case ADD_GAME_EVENT: {
-            const countEvents = state.events.length;
+            const countEvents = events.length;
             const event: GameEvent = action.payload;
             event.id = countEvents;
-            const events: GameEvent[] = [...state.events];
-            events.push(event);
-            return Object.assign({}, state, { events: events });
+            return [...events, event];
         }
         case DELETE_EVENT:
-            const events = state.events.filter((event: GameEvent) => {
+            const newEvents = events.filter((event: GameEvent) => {
                 return event.id !== action.payload;
             });
-            return Object.assign({}, state, { events });
+            return newEvents;
         default:
-            return state;
+            return events;
     }
 };
 
