@@ -1,4 +1,10 @@
-import { SIGN_IN, LOG_IN, LOG_OUT, RESERVE_SLOT } from "../actions/ActionTypes";
+import {
+    SIGN_IN,
+    LOG_IN,
+    LOG_OUT,
+    RESERVE_SLOT,
+    DELETE_EVENT,
+} from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
 // eslint-disable-next-line no-unused-vars
@@ -27,13 +33,22 @@ const setupUser = (
                 isUserLogged: false,
                 loggedInUser: undefined,
             });
-        case RESERVE_SLOT:
+        case RESERVE_SLOT: {
             const { eventId, userId } = action.payload;
             const newUsers = userState.users.map((user: User) => {
                 if (user.id === userId) {
                     return { ...user, events: [...user.events, eventId] };
                 }
                 return user;
+            });
+            return { ...userState, users: newUsers };
+        }
+        case DELETE_EVENT:
+            const newUsers = userState.users.map((user: User) => {
+                const newEvents = user.events.filter((id: number) => {
+                    return id != action.payload;
+                });
+                return { ...user, events: newEvents };
             });
             return { ...userState, users: newUsers };
         default:
