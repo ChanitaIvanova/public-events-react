@@ -9,6 +9,7 @@ import { connect } from "react-redux";
 import { logOut } from "./actions/user/UserActions";
 import M from "materialize-css";
 import { Navbar, Icon, NavItem } from "react-materialize";
+import MyEvents from "./containers/event/MyEvents";
 
 /**
  * Mapps dispatch actions to properties of the component
@@ -75,6 +76,9 @@ class AppComponent extends Component {
                             <NavItem href='/list-events'>List Events</NavItem>
                         )}
                         {this.props.isUserLogged && (
+                            <NavItem href='/my-events'>My Events</NavItem>
+                        )}
+                        {this.props.isUserLogged && (
                             <NavItem href='/add-event'>Add Event</NavItem>
                         )}
                         {!this.props.isUserLogged && (
@@ -103,6 +107,9 @@ class AppComponent extends Component {
                         </Route>
                         <Route exact path='/list-events'>
                             <ListEvents />
+                        </Route>
+                        <Route exact path='/my-events'>
+                            <MyEvents />
                         </Route>
                         <Route
                             path='/logout'

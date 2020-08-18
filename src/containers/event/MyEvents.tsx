@@ -1,3 +1,4 @@
+import React from "react";
 import { connect } from "react-redux";
 // eslint-disable-next-line no-unused-vars
 import { GameEvent } from "../../types/GameEvent";
@@ -5,9 +6,10 @@ import withHeaderAndContentData from "../common/withHeaderAndContentData";
 // eslint-disable-next-line no-unused-vars
 import { HeaderData } from "../common/table.interfaces";
 import Table from "../common/Table";
+import DeleteEvent from "../event/DeleteEvent";
 
 const headerData: HeaderData = {
-    tableName: "Available events",
+    tableName: "My events",
     headers: [
         {
             key: "name",
@@ -33,21 +35,32 @@ const headerData: HeaderData = {
             key: "freeSlots",
             name: "Free Slots",
         },
+        {
+            key: "actions",
+            name: "Actions",
+        },
     ],
 };
 
-const mapStateToProps = ({ events }: any) => {
+const mapStateToProps = ({ events, userState }: any) => {
     return {
-        contentData: events.filter((event: GameEvent) => {
-            return event.freeSlots > 0;
-        }),
+        contentData: events
+            .filter((event: GameEvent) => {
+                return event.owner === userState.loggedInUser.id;
+            })
+            .map((event: any) => {
+                return {
+                    ...event,
+                    actions: <DeleteEvent eventId={event.id}></DeleteEvent>,
+                };
+            }),
     };
 };
 
-const ListEvenets = connect(
+const MyEvenets = connect(
     mapStateToProps,
     // eslint-disable-next-line comma-dangle
     null
 )(withHeaderAndContentData(headerData)(Table));
 
-export default ListEvenets;
+export default MyEvenets;
