@@ -52,9 +52,17 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
     const handleChange = (event: ChangeEvent<any>) => {
         const elementName = event.target.id;
         const nameParts = elementName.split("_");
+        const name = nameParts[0];
+        if (name === "slots") {
+            event.target.value = parseInt(event.target.value);
+            setState({
+                type: "updateState",
+                payload: { name: "freeSlots", value: event.target.value },
+            });
+        }
         setState({
             type: "updateState",
-            payload: { name: [nameParts[0]], value: event.target.value },
+            payload: { name: name, value: event.target.value },
         });
     };
 

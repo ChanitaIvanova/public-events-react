@@ -4,7 +4,14 @@ import TableData from "./table.interfaces";
 
 const Table = ({ headerData, contentData }: TableData) => {
     if (contentData.length === 0) {
-        return <div>There is no data to be displayed</div>;
+        return (
+            <div>
+                <h1>{headerData.tableName}</h1>
+                <div className='card-panel red lighten-2 center'>
+                    There is no data to be displayed!
+                </div>
+            </div>
+        );
     }
     const tableRows = contentData.map((data: any) => {
         const rowData = headerData.headers.map((header: any) => {

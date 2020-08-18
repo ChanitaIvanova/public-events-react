@@ -9,9 +9,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
             gameEvent.game.length > 0 &&
             gameEvent.city.length > 0 &&
             gameEvent.address.length > 0 &&
-            gameEvent.slots > 0 &&
-            gameEvent.freeSlots > 0 &&
-            gameEvent.freeSlots <= gameEvent.slots;
+            parseInt(gameEvent.slots) > 0;
         return isValid;
     };
 
@@ -59,14 +57,6 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                 <FormLabel>Slots</FormLabel>
                 <FormControl
                     value={gameEvent.slots}
-                    onChange={onChange}
-                    type='number'
-                />
-            </FormGroup>
-            <FormGroup controlId={"freeSlots_" + gameEvent.id}>
-                <FormLabel>Free Slots</FormLabel>
-                <FormControl
-                    value={gameEvent.freeSlots}
                     onChange={onChange}
                     type='number'
                 />

@@ -26,10 +26,22 @@ const EditEvent = ({ event }: any) => {
         M.Modal.init(modal, options);
     }, [event, modal]);
 
-    const handleChange = (event: ChangeEvent<any>) => {
-        const elementName = event.target.id;
+    const handleChange = (chageEvent: ChangeEvent<any>) => {
+        const elementName = chageEvent.target.id;
         const nameParts = elementName.split("_");
-        setGameEvent({ ...gameEvent, [nameParts[0]]: event.target.value });
+        const name = nameParts[0];
+        if (name === "slots") {
+            const slots = parseInt(chageEvent.target.value);
+            setGameEvent({
+                ...gameEvent,
+                freeSlots:
+                    parseInt(event.freeSlots) + (slots - parseInt(event.slots)),
+                slots: chageEvent.target.value,
+            });
+
+            return;
+        }
+        setGameEvent({ ...gameEvent, [name]: chageEvent.target.value });
     };
 
     const validateForm = () => {
@@ -38,9 +50,8 @@ const EditEvent = ({ event }: any) => {
             gameEvent.game.length > 0 &&
             gameEvent.city.length > 0 &&
             gameEvent.address.length > 0 &&
-            gameEvent.slots > 0 &&
-            gameEvent.freeSlots > 0 &&
-            gameEvent.freeSlots <= gameEvent.slots;
+            parseInt(gameEvent.slots) > 0 &&
+            parseInt(gameEvent.slots) >= parseInt(event.slots);
         return isValid;
     };
 
