@@ -40,7 +40,7 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
         initialState = event;
     } else {
         initialState = new GameEvent();
-        initialState.owner = loggedInUser.id;
+        initialState.owner = loggedInUser;
     }
     const [state, setState] = useReducer(reducer, initialState);
 
@@ -50,9 +50,11 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
     };
 
     const handleChange = (event: ChangeEvent<any>) => {
+        const elementName = event.target.id;
+        const nameParts = elementName.split("_");
         setState({
             type: "updateState",
-            payload: { name: [event.target.id], value: event.target.value },
+            payload: { name: [nameParts[0]], value: event.target.value },
         });
     };
 

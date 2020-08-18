@@ -27,7 +27,9 @@ const EditEvent = ({ event }: any) => {
     }, [event, modal]);
 
     const handleChange = (event: ChangeEvent<any>) => {
-        setGameEvent({ ...gameEvent, [event.target.id]: event.target.value });
+        const elementName = event.target.id;
+        const nameParts = elementName.split("_");
+        setGameEvent({ ...gameEvent, [nameParts[0]]: event.target.value });
     };
 
     const validateForm = () => {

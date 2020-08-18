@@ -22,7 +22,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <FormGroup controlId={"name" + gameEvent.id}>
+            <FormGroup controlId={"name_" + gameEvent.id}>
                 <FormLabel>Event Name</FormLabel>
                 <FormControl
                     autoFocus
@@ -31,7 +31,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                     onChange={onChange}
                 />
             </FormGroup>
-            <FormGroup controlId={"game" + gameEvent.id}>
+            <FormGroup controlId={"game_" + gameEvent.id}>
                 <FormLabel>Game Name</FormLabel>
                 <FormControl
                     type='text'
@@ -39,7 +39,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                     onChange={onChange}
                 />
             </FormGroup>
-            <FormGroup controlId={"city" + gameEvent.id}>
+            <FormGroup controlId={"city_" + gameEvent.id}>
                 <FormLabel>City</FormLabel>
                 <FormControl
                     type='text'
@@ -47,7 +47,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                     onChange={onChange}
                 />
             </FormGroup>
-            <FormGroup controlId={"address" + gameEvent.id}>
+            <FormGroup controlId={"address_" + gameEvent.id}>
                 <FormLabel>Address</FormLabel>
                 <FormControl
                     value={gameEvent.address}
@@ -55,7 +55,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                     type='text'
                 />
             </FormGroup>
-            <FormGroup controlId={"slots" + gameEvent.id}>
+            <FormGroup controlId={"slots_" + gameEvent.id}>
                 <FormLabel>Slots</FormLabel>
                 <FormControl
                     value={gameEvent.slots}
@@ -63,7 +63,7 @@ const EventForm = ({ gameEvent, displaySubmit, onSubmit, onChange }: any) => {
                     type='number'
                 />
             </FormGroup>
-            <FormGroup controlId={"freeSlots" + gameEvent.id}>
+            <FormGroup controlId={"freeSlots_" + gameEvent.id}>
                 <FormLabel>Free Slots</FormLabel>
                 <FormControl
                     value={gameEvent.freeSlots}

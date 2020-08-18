@@ -47,7 +47,7 @@ const mapStateToProps = ({ events, userState }: any) => {
     return {
         contentData: events
             .filter((event: GameEvent) => {
-                return event.owner === userState.loggedInUser.id;
+                return event.owner === userState.loggedInUser;
             })
             .map((event: any) => {
                 return {
