@@ -6,7 +6,8 @@ import withHeaderAndContentData from "../common/withHeaderAndContentData";
 // eslint-disable-next-line no-unused-vars
 import { HeaderData } from "../common/table.interfaces";
 import Table from "../common/Table";
-import DeleteEvent from "../event/DeleteEvent";
+import DeleteEvent from "./DeleteEvent";
+import EditEvent from "./EditEvent";
 
 const headerData: HeaderData = {
     tableName: "My events",
@@ -51,7 +52,12 @@ const mapStateToProps = ({ events, userState }: any) => {
             .map((event: any) => {
                 return {
                     ...event,
-                    actions: <DeleteEvent eventId={event.id}></DeleteEvent>,
+                    actions: (
+                        <div>
+                            <DeleteEvent eventId={event.id}></DeleteEvent>
+                            <EditEvent event={event}></EditEvent>
+                        </div>
+                    ),
                 };
             }),
     };

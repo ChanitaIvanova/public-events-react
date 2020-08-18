@@ -7,7 +7,11 @@ const DeleteEvent = ({ eventId }: any) => {
     const handleClick = () => {
         dispatch(deleteGameEvent(eventId));
     };
-    return <button onClick={handleClick}>Delete</button>;
+    return (
+        <button className='btn red lighten-2' onClick={handleClick}>
+            Delete
+        </button>
+    );
 };
 
 export default DeleteEvent;

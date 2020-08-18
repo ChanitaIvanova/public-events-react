@@ -1,4 +1,8 @@
-import { ADD_GAME_EVENT, DELETE_EVENT } from "../actions/ActionTypes";
+import {
+    ADD_GAME_EVENT,
+    DELETE_EVENT,
+    EDIT_EVENT,
+} from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { GameEvent } from "../types/GameEvent";
 import { initialState } from "./initialState";
@@ -16,6 +20,13 @@ const gameEvents = (events: any = initialState.events, action: any = {}) => {
                 return event.id !== action.payload;
             });
             return newEvents;
+        case EDIT_EVENT:
+            return events.map((event: GameEvent) => {
+                if (event.id === action.payload.id) {
+                    return { ...event, ...action.payload };
+                }
+                return event;
+            });
         default:
             return events;
     }

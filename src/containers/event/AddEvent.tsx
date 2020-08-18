@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useReducer, FormEvent, ChangeEvent } from "react";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import React, { useReducer, ChangeEvent } from "react";
 import { addGameEvent } from "../../actions/GameEventActions";
 import { connect } from "react-redux";
 import { GameEvent } from "../../types/GameEvent";
+import EventForm from "./EventForm";
 
 /**
  * Maps the reducer function to the properties of the component
@@ -15,8 +15,6 @@ function mapDispatchToProps(dispatch: any) {
         addGameEvent: (event: GameEvent) => dispatch(addGameEvent(event)),
     };
 }
-
-const initialState = new GameEvent();
 
 /**
  * Apply different changes on the state
@@ -36,22 +34,17 @@ function reducer(state: GameEvent, action: { type: string; payload?: any }) {
     }
 }
 
-const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent }: any) => {
+const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
+    let initialState;
+    if (event) {
+        initialState = event;
+    } else {
+        initialState = new GameEvent();
+        initialState.owner = loggedInUser.id;
+    }
     const [state, setState] = useReducer(reducer, initialState);
-    const validateForm = () => {
-        return (
-            state.name.length > 0 &&
-            state.game.length > 0 &&
-            state.city.length > 0 &&
-            state.address.length > 0 &&
-            state.slots > 0 &&
-            state.freeSlots > 0 &&
-            state.freeSlots <= state.slots
-        );
-    };
 
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault();
+    const handleSubmit = () => {
         addGameEvent(state);
         setState({ type: "clearState" });
     };
@@ -70,60 +63,12 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent }: any) => {
     return (
         <div className='AddEvent'>
             <h1>Add Event</h1>
-            <form onSubmit={handleSubmit}>
-                <FormGroup controlId='name'>
-                    <FormLabel>Event Name</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type='text'
-                        value={state.name}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='game'>
-                    <FormLabel>Game Name</FormLabel>
-                    <FormControl
-                        type='text'
-                        value={state.game}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='city'>
-                    <FormLabel>City</FormLabel>
-                    <FormControl
-                        type='text'
-                        value={state.city}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='address'>
-                    <FormLabel>Address</FormLabel>
-                    <FormControl
-                        value={state.address}
-                        onChange={handleChange}
-                        type='text'
-                    />
-                </FormGroup>
-                <FormGroup controlId='slots'>
-                    <FormLabel>Slots</FormLabel>
-                    <FormControl
-                        value={state.slots}
-                        onChange={handleChange}
-                        type='number'
-                    />
-                </FormGroup>
-                <FormGroup controlId='freeSlots'>
-                    <FormLabel>Free Slots</FormLabel>
-                    <FormControl
-                        value={state.freeSlots}
-                        onChange={handleChange}
-                        type='number'
-                    />
-                </FormGroup>
-                <Button block disabled={!validateForm()} type='submit'>
-                    Create event
-                </Button>
-            </form>
+            <EventForm
+                gameEvent={state}
+                displaySubmit={true}
+                onSubmit={handleSubmit}
+                onChange={handleChange}
+            ></EventForm>
         </div>
     );
 };
