@@ -27,17 +27,6 @@
   ],
   "events": [
     {
-      "id": 1,
-      "name": "Game дсд",
-      "game": "Gameс сдд",
-      "city": "Sofia",
-      "address": "Sofia",
-      "user": "",
-      "slots": "10",
-      "freeSlots": 8,
-      "owner": 1
-    },
-    {
       "id": 2,
       "name": "Game",
       "game": "Game",

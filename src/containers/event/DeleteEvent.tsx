@@ -1,11 +1,11 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { deleteGameEvent } from "../../actions/GameEventActions";
+import { removeGameEvent } from "../../services/events.service";
 
 const DeleteEvent = ({ eventId }: any) => {
     const dispatch = useDispatch();
     const handleClick = () => {
-        dispatch(deleteGameEvent(eventId));
+        dispatch(removeGameEvent(eventId));
     };
     return (
         <button className='btn red lighten-2' onClick={handleClick}>

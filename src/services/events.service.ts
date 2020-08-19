@@ -3,6 +3,7 @@ import {
     addGameEvent,
     addGameEvents,
     editGameEvent,
+    deleteGameEvent,
     requestAddGameEvent,
     requestAddGameEventSuccess,
     requestAddGameEventFailed,
@@ -97,6 +98,27 @@ export const updateGameEvent = (gameEvent: GameEvent) => (dispatch: any) => {
         .then((response) => {
             if (response.ok) {
                 dispatch(editGameEvent(gameEvent));
+                return true;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .catch((error: Error) => {
+            console.error(error.message);
+            return false;
+        });
+};
+
+export const removeGameEvent = (eventId: number) => (dispatch: any) => {
+    return fetch(baseUrl + "events/" + eventId, {
+        method: "DELETE",
+    })
+        .then((response) => {
+            if (response.ok) {
+                dispatch(deleteGameEvent(eventId));
                 return true;
             } else {
                 const error = new Error(
