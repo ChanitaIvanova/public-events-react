@@ -60,6 +60,31 @@ export const fetchEvents = () => (dispatch: any) => {
         });
 };
 
+export const reserveGameSlot = (event: GameEvent) => {
+    const gameEvent = { ...event, freeSlots: event.freeSlots - 1 };
+    return fetch(baseUrl + "events/" + event.id, {
+        method: "PUT",
+        body: JSON.stringify(gameEvent),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return true;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .catch((error: Error) => {
+            console.error(error.message);
+            return false;
+        });
+};
+
 // export const loginUser = (email: string, password: string) => (
 //     dispatch: any
 // ) => {

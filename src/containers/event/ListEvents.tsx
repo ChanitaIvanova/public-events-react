@@ -45,15 +45,14 @@ const headerData: HeaderData = {
 };
 
 const mapStateToProps = ({ events, userState }: State) => {
-    const currentUser = userState.users.find((user: User) => {
-        return user.id === userState.loggedInUser?.id;
-    });
     return {
         contentData: events
             .filter((event: GameEvent) => {
-                const userEvent = currentUser?.events.find((id: number) => {
-                    return id === event.id;
-                });
+                const userEvent = userState.loggedInUser?.events.find(
+                    (id: number) => {
+                        return id === event.id;
+                    }
+                );
                 return event.freeSlots > 0 && typeof userEvent === "undefined";
             })
             .map((event: any) => {
@@ -62,8 +61,8 @@ const mapStateToProps = ({ events, userState }: State) => {
                     actions: (
                         <div>
                             <ReserveSlot
-                                eventId={event.id}
-                                userId={userState.loggedInUser}
+                                event={event}
+                                user={userState.loggedInUser}
                             ></ReserveSlot>
                         </div>
                     ),

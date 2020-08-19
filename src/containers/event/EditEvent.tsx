@@ -82,7 +82,7 @@ const EditEvent = ({ event }: any) => {
                 <div className='modal-content'>
                     <h2>Edit Event</h2>
                     <EventForm
-                        event={gameEvent}
+                        gameEvent={gameEvent}
                         displaySubmit={false}
                         onChange={handleChange}
                     ></EventForm>

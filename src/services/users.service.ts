@@ -74,3 +74,31 @@ export const loginUser = (email: string, password: string) => (
             return false;
         });
 };
+
+export const addEventForUser = (user: User, eventId: number) => {
+    const updatedUser = {
+        ...user,
+        events: [...user.events, eventId],
+    };
+    return fetch(baseUrl + "users/" + updatedUser.id, {
+        method: "PUT",
+        body: JSON.stringify(updatedUser),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return true;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .catch((error: Error) => {
+            console.error(error.message);
+            return false;
+        });
+};

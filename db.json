@@ -6,7 +6,10 @@
       "lastName": "Ivanova",
       "email": "chanita.ivanova@gmail.com",
       "password": "3",
-      "events": [],
+      "events": [
+        1,
+        2
+      ],
       "repeatPassword": "3"
     }
   ],
@@ -19,7 +22,7 @@
       "address": "Sofia",
       "user": "",
       "slots": "7",
-      "freeSlots": "7",
+      "freeSlots": 6,
       "owner": 1
     },
     {
@@ -30,7 +33,7 @@
       "address": "Sofia",
       "user": "",
       "slots": "8",
-      "freeSlots": "8",
+      "freeSlots": 7,
       "owner": 1
     }
   ]

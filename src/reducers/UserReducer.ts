@@ -37,14 +37,18 @@ const setupUser = (
                 loggedInUser: undefined,
             });
         case RESERVE_SLOT: {
-            const { eventId, userId } = action.payload;
-            const newUsers = userState.users.map((user: User) => {
-                if (user.id === userId) {
-                    return { ...user, events: [...user.events, eventId] };
-                }
-                return user;
-            });
-            return { ...userState, users: newUsers };
+            const { eventId } = action.payload;
+            if (userState.loggedInUser) {
+                const loggedInUser = {
+                    ...userState.loggedInUser,
+                    events: [...userState.loggedInUser.events, eventId],
+                };
+                return {
+                    ...userState,
+                    loggedInUser: loggedInUser,
+                };
+            }
+            return userState;
         }
         case DELETE_EVENT:
             const newUsers = userState.users.map((user: User) => {

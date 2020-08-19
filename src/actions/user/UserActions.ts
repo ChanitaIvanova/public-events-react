@@ -34,6 +34,6 @@ export const logOut = () => {
     return { type: LOG_OUT };
 };
 
-export const reserveSlotForUser = (eventId: Number, userId: Number) => {
-    return { type: RESERVE_SLOT, payload: { eventId, userId } };
+export const reserveSlotForUser = (eventId: Number) => {
+    return { type: RESERVE_SLOT, payload: { eventId } };
 };

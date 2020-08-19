@@ -8,6 +8,7 @@ import { HeaderData } from "../common/table.interfaces";
 import Table from "../common/Table";
 import DeleteEvent from "./DeleteEvent";
 import EditEvent from "./EditEvent";
+import { State } from "../../reducers/initialState";
 
 const headerData: HeaderData = {
     tableName: "My events",
@@ -43,11 +44,11 @@ const headerData: HeaderData = {
     ],
 };
 
-const mapStateToProps = ({ events, userState }: any) => {
+const mapStateToProps = ({ events, userState }: State) => {
     return {
         contentData: events
             .filter((event: GameEvent) => {
-                return event.owner === userState.loggedInUser;
+                return event.owner === userState.loggedInUser?.id;
             })
             .map((event: any) => {
                 return {
