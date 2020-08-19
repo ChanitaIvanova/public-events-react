@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Chanita",
+      "lastName": "Ivanova",
+      "email": "chanita.ivanova@gmail.com",
+      "password": "3",
+      "events": [],
+      "repeatPassword": "3"
+    }
+  ],
+  "events": []
+}

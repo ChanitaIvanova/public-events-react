@@ -1,96 +1,72 @@
-import React, { FormEvent, Component, ChangeEvent } from "react";
+/* eslint-disable no-unused-vars */
+import React, { FormEvent, ChangeEvent, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import { logIn } from "../../actions/user/UserActions";
-import { connect } from "react-redux";
+import { loginUser } from "../../services/users.service";
 import { Redirect } from "react-router-dom";
-import { User } from "../../types/User";
+import { useSelector, useDispatch } from "react-redux";
+// eslint-disable-next-line no-unused-vars
+import { State } from "../../reducers/initialState";
 
-function mapDispatchToProps(dispatch: any) {
-    return {
-        logIn: (id: number) => dispatch(logIn(id)),
+const LogInForm = () => {
+    const isUserLogged = useSelector(
+        (state: State) => state.userState.isUserLogged
+    );
+    const dispatch = useDispatch();
+    const initialState = {
+        password: "",
+        email: "",
+        userIsMissing: false,
     };
-}
+    const [loginData, setLoginData] = useState(initialState);
 
-class LogIn extends Component {
-    state: any;
-    props: Readonly<any>;
-    constructor(props: any) {
-        super(props);
-        this.props = props;
-        this.state = {
-            password: "",
-            email: "",
-            userIsMissing: false,
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
+    const validateForm = () => {
+        return loginData.email.length > 0 && loginData.password.length > 0;
+    };
 
-    validateForm() {
-        return this.state.email.length > 0 && this.state.password.length > 0;
-    }
-
-    handleSubmit(event: FormEvent) {
+    const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        const user = this.props.users.find((user: User) => {
-            return (
-                user.email === this.state.email &&
-                user.password === this.state.password
-            );
-        });
-        if (user) {
-            this.props.logIn(user.id);
-        } else {
-            this.setState({ userIsMissing: true });
-        }
-    }
+        dispatch(loginUser(loginData.email, loginData.password));
+    };
 
-    handleChange(event: ChangeEvent<any>) {
-        this.setState({ [event.target.id]: event.target.value });
-    }
+    const handleChange = (event: ChangeEvent<any>) => {
+        setLoginData({ ...loginData, [event.target.id]: event.target.value });
+    };
 
-    render() {
-        if (this.props.isUserLogged) {
-            return <Redirect to='/' />;
-        }
-        return (
-            <div className='Login'>
-                <h1>Log In</h1>
-                {this.state.userIsMissing && (
-                    <div className='card-panel teal lighten-2'>
-                        There is no such user
-                    </div>
-                )}
-                <form onSubmit={this.handleSubmit}>
-                    <FormGroup controlId='email'>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl
-                            autoFocus
-                            type='email'
-                            value={this.state.email}
-                            onChange={this.handleChange}
-                        />
-                    </FormGroup>
-                    <FormGroup controlId='password'>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl
-                            value={this.state.password}
-                            onChange={this.handleChange}
-                            type='password'
-                        />
-                    </FormGroup>
-                    <Button block disabled={!this.validateForm()} type='submit'>
-                        Login
-                    </Button>
-                </form>
-            </div>
-        );
+    if (isUserLogged) {
+        return <Redirect to='/' />;
     }
-}
-function mapStateToProps({ userState }: any) {
-    return { isUserLogged: userState.isUserLogged, users: userState.users };
-}
-
-const LogInForm = connect(mapStateToProps, mapDispatchToProps)(LogIn);
+    return (
+        <div className='Login'>
+            <h1>Log In</h1>
+            {loginData.userIsMissing && (
+                <div className='card-panel teal lighten-2'>
+                    There is no such user
+                </div>
+            )}
+            <form onSubmit={handleSubmit}>
+                <FormGroup controlId='email'>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl
+                        autoFocus
+                        type='email'
+                        value={loginData.email}
+                        onChange={handleChange}
+                    />
+                </FormGroup>
+                <FormGroup controlId='password'>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl
+                        value={loginData.password}
+                        onChange={handleChange}
+                        type='password'
+                    />
+                </FormGroup>
+                <Button block disabled={!validateForm()} type='submit'>
+                    Login
+                </Button>
+            </form>
+        </div>
+    );
+};
 
 export default LogInForm;

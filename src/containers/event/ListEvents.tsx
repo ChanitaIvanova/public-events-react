@@ -46,7 +46,7 @@ const headerData: HeaderData = {
 
 const mapStateToProps = ({ events, userState }: State) => {
     const currentUser = userState.users.find((user: User) => {
-        return user.id === userState.loggedInUser;
+        return user.id === userState.loggedInUser?.id;
     });
     return {
         contentData: events

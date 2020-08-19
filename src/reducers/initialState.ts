@@ -4,7 +4,8 @@ import { User } from "../types/User";
 export interface UserState {
     users: User[];
     isUserLogged: boolean;
-    loggedInUser: number | undefined;
+    loggedInUser: User | undefined;
+    isRequestPending: boolean;
 }
 export interface State {
     events: GameEvent[];
@@ -16,5 +17,6 @@ export const initialState: State = {
         users: [],
         isUserLogged: false,
         loggedInUser: undefined,
+        isRequestPending: false,
     },
 };

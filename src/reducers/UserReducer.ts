@@ -1,9 +1,12 @@
 import {
-    SIGN_IN,
     LOG_IN,
     LOG_OUT,
     RESERVE_SLOT,
     DELETE_EVENT,
+    REQUEST_ADD_USER,
+    REQUEST_ADD_USER_SUCESS,
+    REQUEST_ADD_USER_FAILED,
+    REQUEST_LOGIN_USER,
 } from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
@@ -16,13 +19,12 @@ const setupUser = (
     action: any = {}
 ) => {
     switch (action.type) {
-        case SIGN_IN:
-            const countUsers = userState.users.length;
-            const user: User = action.payload;
-            user.id = countUsers;
-            const users: User[] = [...userState.users];
-            users.push(user);
-            return Object.assign({}, userState, { users: users });
+        case REQUEST_ADD_USER:
+        case REQUEST_LOGIN_USER:
+            return { ...userState, isRequestPending: true };
+        case REQUEST_ADD_USER_SUCESS:
+        case REQUEST_ADD_USER_FAILED:
+            return { ...userState, isRequestPending: false };
         case LOG_IN:
             return Object.assign({}, userState, {
                 isUserLogged: true,
@@ -46,7 +48,7 @@ const setupUser = (
         case DELETE_EVENT:
             const newUsers = userState.users.map((user: User) => {
                 const newEvents = user.events.filter((id: number) => {
-                    return id != action.payload;
+                    return id !== action.payload;
                 });
                 return { ...user, events: newEvents };
             });

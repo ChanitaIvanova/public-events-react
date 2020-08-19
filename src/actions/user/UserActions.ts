@@ -1,13 +1,33 @@
-import { SIGN_IN, LOG_IN, LOG_OUT, RESERVE_SLOT } from "../ActionTypes";
+import {
+    LOG_IN,
+    LOG_OUT,
+    RESERVE_SLOT,
+    REQUEST_ADD_USER,
+    REQUEST_ADD_USER_SUCESS,
+    REQUEST_ADD_USER_FAILED,
+    REQUEST_LOGIN_USER,
+} from "../ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../../types/User";
 
-export const signIn = (user: User) => {
-    return { type: SIGN_IN, payload: user };
+export const requestAddUser = () => {
+    return { type: REQUEST_ADD_USER };
 };
 
-export const logIn = (id: number) => {
-    return { type: LOG_IN, payload: id };
+export const requestAddUserSucess = () => {
+    return { type: REQUEST_ADD_USER_SUCESS };
+};
+
+export const requestAddUserFailed = () => {
+    return { type: REQUEST_ADD_USER_FAILED };
+};
+
+export const requestLogInUser = () => {
+    return { type: REQUEST_LOGIN_USER };
+};
+
+export const logIn = (user: User) => {
+    return { type: LOG_IN, payload: user };
 };
 
 export const logOut = () => {
