@@ -10,5 +10,28 @@
       "repeatPassword": "3"
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": 1,
+      "name": "Game",
+      "game": "Game",
+      "city": "Sofia",
+      "address": "Sofia",
+      "user": "",
+      "slots": "7",
+      "freeSlots": "7",
+      "owner": 1
+    },
+    {
+      "id": 2,
+      "name": "Game",
+      "game": "Game",
+      "city": "Sofia",
+      "address": "Sofia",
+      "user": "",
+      "slots": "8",
+      "freeSlots": "8",
+      "owner": 1
+    }
+  ]
 }

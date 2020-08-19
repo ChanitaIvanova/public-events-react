@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, NavLink } from "react-router-dom";
 import Home from "./containers/home/Home";
 import LogInForm from "./containers/login/Login";
 import SignInForm from "./containers/sign-in/SignIn";
@@ -71,24 +71,58 @@ class AppComponent extends Component {
                             preventScrolling: true,
                         }}
                     >
-                        <NavItem href='/'>Home</NavItem>
+                        <NavLink exact activeClassName='active' to='/'>
+                            Home
+                        </NavLink>
                         {this.props.isUserLogged && (
-                            <NavItem href='/list-events'>List Events</NavItem>
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/list-events'
+                            >
+                                List Events
+                            </NavLink>
                         )}
                         {this.props.isUserLogged && (
-                            <NavItem href='/my-events'>My Events</NavItem>
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/my-events'
+                            >
+                                My Events
+                            </NavLink>
                         )}
                         {this.props.isUserLogged && (
-                            <NavItem href='/add-event'>Add Event</NavItem>
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/add-event'
+                            >
+                                Add Event
+                            </NavLink>
                         )}
                         {!this.props.isUserLogged && (
-                            <NavItem href='/login'>Login</NavItem>
+                            <NavLink exact activeClassName='active' to='/login'>
+                                Login
+                            </NavLink>
                         )}
                         {!this.props.isUserLogged && (
-                            <NavItem href='/sign-in'>Sign In</NavItem>
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/sign-in'
+                            >
+                                Sign In
+                            </NavLink>
                         )}
                         {this.props.isUserLogged && (
-                            <NavItem href='/logout'>Logout</NavItem>
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/logout'
+                            >
+                                Logout
+                            </NavLink>
                         )}
                     </Navbar>
                     <hr />

@@ -1,20 +1,11 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useReducer, ChangeEvent } from "react";
-import { addGameEvent } from "../../actions/GameEventActions";
-import { connect } from "react-redux";
 import { GameEvent } from "../../types/GameEvent";
+import { useDispatch, useSelector } from "react-redux";
 import EventForm from "./EventForm";
-
-/**
- * Maps the reducer function to the properties of the component
- * @param {any} dispatch method that will dispatch the function to the reducer
- * @return {any} Object that will contain the new properties
- */
-function mapDispatchToProps(dispatch: any) {
-    return {
-        addGameEvent: (event: GameEvent) => dispatch(addGameEvent(event)),
-    };
-}
+import { addEvent } from "../../services/events.service";
+// eslint-disable-next-line no-unused-vars
+import { State } from "../../reducers/initialState";
 
 /**
  * Apply different changes on the state
@@ -34,19 +25,26 @@ function reducer(state: GameEvent, action: { type: string; payload?: any }) {
     }
 }
 
-const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
+const AddEventForm = ({ event }: any) => {
+    const dispatch = useDispatch();
+    const isUserLogged = useSelector(
+        (state: State) => state.userState.isUserLogged
+    );
+    const loggedInUser = useSelector(
+        (state: State) => state.userState.loggedInUser
+    );
     let initialState;
     if (event) {
         initialState = event;
     } else {
         initialState = new GameEvent();
-        initialState.owner = loggedInUser;
+        initialState.owner = loggedInUser?.id;
     }
-    const [state, setState] = useReducer(reducer, initialState);
+    const [gameEvent, setGameEvent] = useReducer(reducer, initialState);
 
     const handleSubmit = () => {
-        addGameEvent(state);
-        setState({ type: "clearState" });
+        dispatch(addEvent(gameEvent));
+        setGameEvent({ type: "clearState" });
     };
 
     const handleChange = (event: ChangeEvent<any>) => {
@@ -55,12 +53,12 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
         const name = nameParts[0];
         if (name === "slots") {
             event.target.value = parseInt(event.target.value);
-            setState({
+            setGameEvent({
                 type: "updateState",
                 payload: { name: "freeSlots", value: event.target.value },
             });
         }
-        setState({
+        setGameEvent({
             type: "updateState",
             payload: { name: name, value: event.target.value },
         });
@@ -74,7 +72,7 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
         <div className='AddEvent'>
             <h1>Add Event</h1>
             <EventForm
-                gameEvent={state}
+                gameEvent={gameEvent}
                 displaySubmit={true}
                 onSubmit={handleSubmit}
                 onChange={handleChange}
@@ -82,18 +80,5 @@ const AddEvent = ({ isUserLogged, loggedInUser, addGameEvent, event }: any) => {
         </div>
     );
 };
-/**
- * Maps values of the state to properties of the component
- * @param {any} state the current state
- * @return {any} new object that contains part of the properies passed
- *  to the component
- */
-function mapStateToProps({ userState }: any) {
-    return {
-        isUserLogged: userState.isUserLogged,
-        loggedInUser: userState.loggedInUser,
-    };
-}
-const AddEventForm = connect(mapStateToProps, mapDispatchToProps)(AddEvent);
 
 export default AddEventForm;

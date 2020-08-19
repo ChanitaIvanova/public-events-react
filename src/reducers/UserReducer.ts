@@ -26,10 +26,11 @@ const setupUser = (
         case REQUEST_ADD_USER_FAILED:
             return { ...userState, isRequestPending: false };
         case LOG_IN:
-            return Object.assign({}, userState, {
+            return {
+                ...userState,
                 isUserLogged: true,
                 loggedInUser: action.payload,
-            });
+            };
         case LOG_OUT:
             return Object.assign({}, userState, {
                 isUserLogged: false,
