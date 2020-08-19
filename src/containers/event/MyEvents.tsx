@@ -30,6 +30,14 @@ const headerData: HeaderData = {
             name: "Address",
         },
         {
+            key: "date",
+            name: "Date",
+        },
+        {
+            key: "time:formatted",
+            name: "Time",
+        },
+        {
             key: "slots",
             name: "Slots",
         },
@@ -51,8 +59,19 @@ const mapStateToProps = ({ events, userState }: State) => {
                 return event.owner === userState.loggedInUser?.id;
             })
             .map((event: any) => {
+                let formattedTime = "";
+                if (event.time) {
+                    let minutes = event.time % 3600;
+                    const hours = (event.time - minutes) / 3600;
+                    minutes = minutes / 60;
+                    formattedTime =
+                        (hours < 10 ? "0" + hours : hours) +
+                        ":" +
+                        (minutes < 10 ? "0" + minutes : minutes);
+                }
                 return {
                     ...event,
+                    "time:formatted": formattedTime,
                     actions: (
                         <div>
                             <DeleteEvent eventId={event.id}></DeleteEvent>
