@@ -7,7 +7,6 @@ export class GameEvent {
     game: string = "";
     city: string = "";
     address: string = "";
-    user: string = "";
     slots: number = 0;
     freeSlots: number = 0;
     owner: number | undefined = undefined;

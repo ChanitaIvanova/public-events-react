@@ -11,18 +11,30 @@
         2
       ],
       "repeatPassword": "3"
+    },
+    {
+      "id": 2,
+      "firstName": "Chanita",
+      "lastName": "Ivanova",
+      "email": "a@a.a",
+      "password": "2",
+      "events": [
+        1,
+        2
+      ],
+      "repeatPassword": "2"
     }
   ],
   "events": [
     {
       "id": 1,
-      "name": "Game",
-      "game": "Game",
+      "name": "Game дсд",
+      "game": "Gameс сдд",
       "city": "Sofia",
       "address": "Sofia",
       "user": "",
-      "slots": "7",
-      "freeSlots": 6,
+      "slots": "10",
+      "freeSlots": 8,
       "owner": 1
     },
     {
@@ -33,7 +45,7 @@
       "address": "Sofia",
       "user": "",
       "slots": "8",
-      "freeSlots": 7,
+      "freeSlots": 6,
       "owner": 1
     }
   ]

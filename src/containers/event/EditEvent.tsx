@@ -3,7 +3,7 @@ import React, { useEffect, useState, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import M from "materialize-css";
 import EventForm from "./EventForm";
-import { editGameEvent } from "../../actions/GameEventActions";
+import { updateGameEvent } from "../../services/events.service";
 
 const EditEvent = ({ event }: any) => {
     const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const EditEvent = ({ event }: any) => {
     };
 
     const handleClick = () => {
-        dispatch(editGameEvent(gameEvent));
+        dispatch(updateGameEvent(gameEvent));
     };
 
     return (

@@ -8,7 +8,7 @@ import ListEvents from "./containers/event/ListEvents";
 import { connect } from "react-redux";
 import { logOut } from "./actions/user/UserActions";
 import M from "materialize-css";
-import { Navbar, Icon, NavItem } from "react-materialize";
+import { Navbar, Icon } from "react-materialize";
 import MyEvents from "./containers/event/MyEvents";
 
 /**

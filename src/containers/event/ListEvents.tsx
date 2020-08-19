@@ -7,8 +7,8 @@ import withHeaderAndContentData from "../common/withHeaderAndContentData";
 import { HeaderData } from "../common/table.interfaces";
 import Table from "../common/Table";
 import ReserveSlot from "./ReserveSlot";
+// eslint-disable-next-line no-unused-vars
 import { State } from "../../reducers/initialState";
-import { User } from "../../types/User";
 
 const headerData: HeaderData = {
     tableName: "Available events",

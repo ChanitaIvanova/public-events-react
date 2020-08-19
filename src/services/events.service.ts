@@ -2,6 +2,7 @@ import { baseUrl } from "../config";
 import {
     addGameEvent,
     addGameEvents,
+    editGameEvent,
     requestAddGameEvent,
     requestAddGameEventSuccess,
     requestAddGameEventFailed,
@@ -71,6 +72,31 @@ export const reserveGameSlot = (event: GameEvent) => {
     })
         .then((response) => {
             if (response.ok) {
+                return true;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .catch((error: Error) => {
+            console.error(error.message);
+            return false;
+        });
+};
+
+export const updateGameEvent = (gameEvent: GameEvent) => (dispatch: any) => {
+    return fetch(baseUrl + "events/" + gameEvent.id, {
+        method: "PUT",
+        body: JSON.stringify(gameEvent),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                dispatch(editGameEvent(gameEvent));
                 return true;
             } else {
                 const error = new Error(
