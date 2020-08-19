@@ -1,5 +1,6 @@
 import { baseUrl } from "../config";
 import {
+    logOut,
     logIn,
     requestAddUser,
     requestAddUserSucess,
@@ -8,6 +9,7 @@ import {
 } from "../actions/user/UserActions";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
+import cookie from "js-cookie";
 
 export const addUser = (user: User) => (dispatch: any) => {
     dispatch(requestAddUser());
@@ -66,10 +68,43 @@ export const loginUser = (email: string, password: string) => (
                 const error = new Error("Error: No user was found");
                 throw error;
             }
+            cookie.set("user-id", users[0].id);
             return dispatch(logIn(users[0]));
         })
         .catch((error) => {
             dispatch(requestAddUserFailed());
+            console.error(error.message);
+            return false;
+        });
+};
+
+export const getUser = () => (dispatch: any) => {
+    const userId = cookie.get("user-id");
+    if (!userId) {
+        return;
+    }
+    return fetch(baseUrl + "users/" + userId, {
+        method: "GET",
+    })
+        .then((response) => {
+            if (response.ok) {
+                return response;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .then((response) => response.json())
+        .then((user) => {
+            if (!user) {
+                const error = new Error("Error: No user was found");
+                throw error;
+            }
+            return dispatch(logIn(user));
+        })
+        .catch((error) => {
             console.error(error.message);
             return false;
         });
@@ -101,4 +136,9 @@ export const addEventForUser = (user: User, eventId: number) => {
             console.error(error.message);
             return false;
         });
+};
+
+export const clearUser = () => (dispatch: any) => {
+    cookie.remove("user-id");
+    dispatch(logOut());
 };

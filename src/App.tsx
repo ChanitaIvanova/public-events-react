@@ -6,10 +6,10 @@ import SignInForm from "./containers/sign-in/SignIn";
 import AddEventForm from "./containers/event/AddEvent";
 import ListEvents from "./containers/event/ListEvents";
 import { connect } from "react-redux";
-import { logOut } from "./actions/user/UserActions";
 import M from "materialize-css";
 import { Navbar, Icon } from "react-materialize";
 import MyEvents from "./containers/event/MyEvents";
+import { clearUser } from "./services/users.service";
 
 /**
  * Mapps dispatch actions to properties of the component
@@ -19,7 +19,7 @@ import MyEvents from "./containers/event/MyEvents";
  */
 function mapDispatchToProps(dispatch: Function) {
     return {
-        logOut: () => dispatch(logOut()),
+        logOut: () => dispatch(clearUser()),
     };
 }
 

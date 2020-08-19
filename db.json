@@ -34,7 +34,17 @@
       "address": "Sofia",
       "user": "",
       "slots": "8",
-      "freeSlots": 6,
+      "freeSlots": 4,
+      "owner": 1
+    },
+    {
+      "id": 3,
+      "name": "Game",
+      "game": "Game",
+      "city": "Sofia",
+      "address": "Sofia",
+      "slots": "34",
+      "freeSlots": "34",
       "owner": 1
     }
   ]

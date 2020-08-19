@@ -8,8 +8,10 @@ import { Provider } from "react-redux";
 import store from "./store/index";
 import "materialize-css/dist/css/materialize.css";
 import { fetchEvents } from "./services/events.service";
+import { getUser } from "./services/users.service";
 
 store.dispatch(fetchEvents());
+store.dispatch(getUser());
 
 ReactDOM.render(
     <Provider store={store}>
