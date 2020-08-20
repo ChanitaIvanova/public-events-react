@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import M from "materialize-css";
 import styles from "./Modal.module.scss";
+import classNames from "classnames";
 
 const Modal = ({
     children,
@@ -38,7 +39,9 @@ const Modal = ({
                 id={"modal_" + id}
                 className='modal'
             >
-                <div className={"modal-content " + styles.modalContent}>
+                <div
+                    className={classNames("modal-content", styles.modalContent)}
+                >
                     <h2>{title}</h2>
                     {children}
                 </div>
@@ -48,10 +51,10 @@ const Modal = ({
                     </button>
                     <button
                         onClick={handleClick}
-                        className={
-                            "modal-close waves-effect waves-light btn " +
+                        className={classNames(
+                            "modal-close waves-effect waves-light btn",
                             submitButtonClasess
-                        }
+                        )}
                     >
                         {submitButtonLabel}
                     </button>
