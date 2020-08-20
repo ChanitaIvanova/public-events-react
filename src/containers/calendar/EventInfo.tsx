@@ -6,7 +6,7 @@ import { freeGameSlot, formatTime } from "../../services/events.service";
 import { removeEventForUser } from "../../services/users.service";
 import { freeSlotForUser } from "../../actions/user/UserActions";
 import { State } from "../../reducers/initialState";
-import "./EventInfo.css";
+import styles from "./EventInfo.module.scss";
 
 const EventInfo = ({ eventId }: any) => {
     const dispatch = useDispatch();
@@ -55,14 +55,14 @@ const EventInfo = ({ eventId }: any) => {
                 id={"modal_" + event.id}
                 className='modal'
             >
-                {/* If you want Bottom Sheet Modal then add 
+                {/* If you want Bottom Sheet Modal then add
                         bottom-sheet class to the "modal" div
                         If you want Fixed Footer Modal then add
                         modal-fixed-footer to the "modal" div*/}
-                <div className='modal-content'>
+                <div className={"modal-content " + styles.modalContent}>
                     <section>
                         <h2>{event.name}</h2>
-                        <dl>
+                        <dl className={styles.definitionList}>
                             <dt>Game</dt>
                             <dd>{event.game}</dd>
                             <dt>City</dt>
