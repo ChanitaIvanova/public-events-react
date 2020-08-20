@@ -9,6 +9,7 @@ import Table from "../common/Table";
 import ReserveSlot from "./ReserveSlot";
 // eslint-disable-next-line no-unused-vars
 import { State } from "../../reducers/initialState";
+import { formatTime } from "../../services/events.service";
 
 const headerData: HeaderData = {
     tableName: "Available events",
@@ -64,19 +65,9 @@ const mapStateToProps = ({ events, userState }: State) => {
                 return event.freeSlots > 0 && typeof userEvent === "undefined";
             })
             .map((event: any) => {
-                let formattedTime = "";
-                if (event.time) {
-                    let minutes = event.time % 3600;
-                    const hours = (event.time - minutes) / 3600;
-                    minutes = minutes / 60;
-                    formattedTime =
-                        (hours < 10 ? "0" + hours : hours) +
-                        ":" +
-                        (minutes < 10 ? "0" + minutes : minutes);
-                }
                 return {
                     ...event,
-                    "time:formatted": formattedTime,
+                    "time:formatted": formatTime(event),
                     actions: (
                         <div>
                             <ReserveSlot

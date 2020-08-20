@@ -133,41 +133,17 @@ export const removeGameEvent = (eventId: number) => (dispatch: any) => {
         });
 };
 
-// export const loginUser = (email: string, password: string) => (
-//     dispatch: any
-// ) => {
-//     dispatch(requestLogInUser());
-//     const searchUrl =
-//         baseUrl +
-//         "users?email=" +
-//         encodeURIComponent(email) +
-//         "&password=" +
-//         encodeURIComponent(password);
-//     return fetch(searchUrl, {
-//         method: "GET",
-//     })
-//         .then((response) => {
-//             if (response.ok) {
-//                 dispatch(requestAddUserSucess());
-//                 return response;
-//             } else {
-//                 const error = new Error(
-//                     "Error " + response.status + ": " + response.statusText
-//                 );
-//                 throw error;
-//             }
-//         })
-//         .then((response) => response.json())
-//         .then((users) => {
-//             if (!users || users.length === 0) {
-//                 const error = new Error("Error: No user was found");
-//                 throw error;
-//             }
-//             return dispatch(logIn(users[0]));
-//         })
-//         .catch((error) => {
-//             dispatch(requestAddUserFailed());
-//             console.error(error.message);
-//             return false;
-//         });
-// };
+export const formatTime = (event: GameEvent): string => {
+    let formattedTime = "";
+    if (event.time) {
+        let minutes = event.time % 3600;
+        const hours = (event.time - minutes) / 3600;
+        minutes = minutes / 60;
+        formattedTime =
+            (hours < 10 ? "0" + hours : hours) +
+            ":" +
+            (minutes < 10 ? "0" + minutes : minutes);
+    }
+
+    return formattedTime;
+};

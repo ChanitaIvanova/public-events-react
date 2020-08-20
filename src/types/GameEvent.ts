@@ -8,7 +8,7 @@ export class GameEvent {
     city: string = "";
     address: string = "";
     date: string = new Date().toISOString().split("T")[0];
-    time: string = "0";
+    time: number = 0;
     slots: number = 0;
     freeSlots: number = 0;
     owner: number | undefined = undefined;

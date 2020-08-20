@@ -8,7 +8,9 @@
       "password": "3",
       "events": [
         1,
-        2
+        2,
+        5,
+        3
       ],
       "repeatPassword": "3"
     },
@@ -46,7 +48,7 @@
       "city": "Sofia",
       "address": "Sofia",
       "slots": "34",
-      "freeSlots": "34",
+      "freeSlots": 33,
       "owner": 1,
       "date": "2020-08-30",
       "time": 23400
@@ -71,7 +73,7 @@
       "address": "Sofia",
       "date": "2020-08-26",
       "slots": "8",
-      "freeSlots": "8",
+      "freeSlots": 7,
       "owner": 1,
       "time": 75600
     },

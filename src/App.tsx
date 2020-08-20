@@ -10,6 +10,7 @@ import M from "materialize-css";
 import { Navbar, Icon } from "react-materialize";
 import MyEvents from "./containers/event/MyEvents";
 import { clearUser } from "./services/users.service";
+import Calendar from "./containers/calendar/Calendar";
 
 /**
  * Mapps dispatch actions to properties of the component
@@ -101,6 +102,15 @@ class AppComponent extends Component {
                                 Add Event
                             </NavLink>
                         )}
+                        {this.props.isUserLogged && (
+                            <NavLink
+                                exact
+                                activeClassName='active'
+                                to='/calendar'
+                            >
+                                Calendar
+                            </NavLink>
+                        )}
                         {!this.props.isUserLogged && (
                             <NavLink exact activeClassName='active' to='/login'>
                                 Login
@@ -144,6 +154,9 @@ class AppComponent extends Component {
                         </Route>
                         <Route exact path='/my-events'>
                             <MyEvents />
+                        </Route>
+                        <Route exact path='/calendar'>
+                            <Calendar />
                         </Route>
                         <Route
                             path='/logout'
