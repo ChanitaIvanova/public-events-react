@@ -5,10 +5,12 @@ import { useSelector } from "react-redux";
 // eslint-disable-next-line no-unused-vars
 import { State } from "../../reducers/initialState";
 import { formatTime } from "../../services/events.service";
-import EventInfo from "./EventInfo";
+import EventInfoContainer from "./EventInfoContainter";
 
 const renderEventContent = (eventInfo: any) => {
-    return <EventInfo eventId={eventInfo.event.id}></EventInfo>;
+    return (
+        <EventInfoContainer eventId={eventInfo.event.id}></EventInfoContainer>
+    );
 };
 
 const Calendar = () => {
