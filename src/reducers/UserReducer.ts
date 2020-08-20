@@ -2,6 +2,7 @@ import {
     LOG_IN,
     LOG_OUT,
     RESERVE_SLOT,
+    FREE_SLOT,
     DELETE_EVENT,
     REQUEST_ADD_USER,
     REQUEST_ADD_USER_SUCESS,
@@ -42,6 +43,22 @@ const setupUser = (
                 const loggedInUser = {
                     ...userState.loggedInUser,
                     events: [...userState.loggedInUser.events, eventId],
+                };
+                return {
+                    ...userState,
+                    loggedInUser: loggedInUser,
+                };
+            }
+            return userState;
+        }
+        case FREE_SLOT: {
+            const { eventId } = action.payload;
+            if (userState.loggedInUser) {
+                const loggedInUser = {
+                    ...userState.loggedInUser,
+                    events: userState.loggedInUser.events.filter((event) => {
+                        return event !== eventId;
+                    }),
                 };
                 return {
                     ...userState,

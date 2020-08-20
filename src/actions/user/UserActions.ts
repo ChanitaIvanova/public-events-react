@@ -6,6 +6,7 @@ import {
     REQUEST_ADD_USER_SUCESS,
     REQUEST_ADD_USER_FAILED,
     REQUEST_LOGIN_USER,
+    FREE_SLOT,
 } from "../ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../../types/User";
@@ -36,4 +37,8 @@ export const logOut = () => {
 
 export const reserveSlotForUser = (eventId: Number) => {
     return { type: RESERVE_SLOT, payload: { eventId } };
+};
+
+export const freeSlotForUser = (eventId: Number) => {
+    return { type: FREE_SLOT, payload: { eventId } };
 };

@@ -1,4 +1,5 @@
 import {
+    FREE_SLOT,
     ADD_GAME_EVENT,
     DELETE_EVENT,
     EDIT_EVENT,
@@ -39,6 +40,15 @@ const gameEvents = (events: any = initialState.events, action: any = {}) => {
                 }
                 return event;
             });
+        case FREE_SLOT: {
+            const { eventId } = action.payload;
+            return events.map((event: GameEvent) => {
+                if (event.id === eventId) {
+                    return { ...event, freeSlots: event.freeSlots + 1 };
+                }
+                return event;
+            });
+        }
         default:
             return events;
     }

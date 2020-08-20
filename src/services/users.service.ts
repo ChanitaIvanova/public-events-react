@@ -138,6 +138,36 @@ export const addEventForUser = (user: User, eventId: number) => {
         });
 };
 
+export const removeEventForUser = (user: User, eventId: number) => {
+    const updatedUser = {
+        ...user,
+        events: user.events.filter((event) => {
+            return event !== eventId;
+        }),
+    };
+    return fetch(baseUrl + "users/" + updatedUser.id, {
+        method: "PUT",
+        body: JSON.stringify(updatedUser),
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+        .then((response) => {
+            if (response.ok) {
+                return true;
+            } else {
+                const error = new Error(
+                    "Error " + response.status + ": " + response.statusText
+                );
+                throw error;
+            }
+        })
+        .catch((error: Error) => {
+            console.error(error.message);
+            return false;
+        });
+};
+
 export const clearUser = () => (dispatch: any) => {
     cookie.remove("user-id");
     dispatch(logOut());

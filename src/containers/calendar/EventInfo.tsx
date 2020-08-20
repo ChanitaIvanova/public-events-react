@@ -1,13 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useEffect, useState, ChangeEvent } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import M from "materialize-css";
-import { updateGameEvent, formatTime } from "../../services/events.service";
+import { freeGameSlot, formatTime } from "../../services/events.service";
+import { removeEventForUser } from "../../services/users.service";
+import { freeSlotForUser } from "../../actions/user/UserActions";
 import { State } from "../../reducers/initialState";
 import "./EventInfo.css";
 
 const EventInfo = ({ eventId }: any) => {
     const dispatch = useDispatch();
+    const user = useSelector((state: State) => state.userState.loggedInUser);
     const event = useSelector((state: State) => {
         return state.events.find((event) => {
             return event.id.toString() === eventId;
@@ -28,7 +31,10 @@ const EventInfo = ({ eventId }: any) => {
     }, [event, modal]);
 
     const handleClick = () => {
-        //dispatch(updateGameEvent(event));
+        if (!user || !event) return;
+        removeEventForUser(user, event.id);
+        freeGameSlot(event);
+        dispatch(freeSlotForUser(event.id));
     };
     if (!event) {
         return null;
@@ -76,9 +82,9 @@ const EventInfo = ({ eventId }: any) => {
                     </button>
                     <button
                         onClick={handleClick}
-                        className='modal-close waves-effect waves-green btn'
+                        className='modal-close waves-effect waves-light red lighten-2 btn'
                     >
-                        Remove
+                        Leave
                     </button>
                 </div>
             </div>
