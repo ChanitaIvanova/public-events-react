@@ -3,6 +3,7 @@ import React from "react";
 import { formatTime } from "../../services/events.service";
 import styles from "./EventInfo.module.scss";
 import Modal from "../common/Modal";
+import classNames from "classnames";
 
 const EventInfo = ({ event, handleClick }: any) => {
     if (!event) {
@@ -11,7 +12,10 @@ const EventInfo = ({ event, handleClick }: any) => {
     return (
         <>
             <em
-                className='waves-effect waves-light modal-trigger'
+                className={classNames(
+                    "waves-effect waves-light modal-trigger",
+                    styles.eventDetails
+                )}
                 data-target={"modal_" + event.id}
             >
                 {event.name + " " + formatTime(event)}

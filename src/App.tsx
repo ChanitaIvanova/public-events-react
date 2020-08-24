@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Route, Switch, Redirect, NavLink } from "react-router-dom";
 import Home from "./containers/home/Home";
 import LogInForm from "./containers/login/Login";
@@ -6,7 +6,6 @@ import SignInForm from "./containers/sign-in/SignIn";
 import AddEventForm from "./containers/event/AddEvent";
 import ListEvents from "./containers/event/ListEvents";
 import { connect } from "react-redux";
-import M from "materialize-css";
 import { Navbar, Icon } from "react-materialize";
 import MyEvents from "./containers/event/MyEvents";
 import { clearUser } from "./services/users.service";
@@ -24,154 +23,177 @@ function mapDispatchToProps(dispatch: Function) {
     };
 }
 
-/**
- * The entry point to the app
- */
-class AppComponent extends Component {
-    props: Readonly<any>;
-    /**
-     * Initializes the component
-     * @param {any} props properties passed from the parent
-     */
-    constructor(props: any) {
-        super(props);
-        this.props = props;
-    }
+const AppComponent = ({ isUserLogged, logOut }: any) => {
+    const PrivateRoute = ({ children, isAuthenticated, ...rest }: any) => {
+        return (
+            <Route
+                {...rest}
+                render={({ location }) =>
+                    isAuthenticated ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/login",
+                                state: { from: location },
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    };
 
-    /**
-     * Called after the component mounts and initializes
-     * materialize
-     */
-    componentDidMount() {
-        // eslint-disable-next-line new-cap
-        M.AutoInit();
-    }
+    const NotLoggedInRoute = ({ children, isAuthenticated, ...rest }: any) => {
+        return (
+            <Route
+                {...rest}
+                render={({ location }) =>
+                    !isAuthenticated ? (
+                        children
+                    ) : (
+                        <Redirect
+                            to={{
+                                pathname: "/",
+                                state: { from: location },
+                            }}
+                        />
+                    )
+                }
+            />
+        );
+    };
 
     /**
      * Renders the component
      * @return {JSX} the html like element that will be rendered
      */
-    render() {
-        return (
-            <div>
-                <header>
-                    <Navbar
-                        alignLinks='right'
-                        brand={
-                            <a className='brand-logo' href='/'>
-                                Logo
-                            </a>
-                        }
-                        id='mobile-nav'
-                        menuIcon={<Icon>menu</Icon>}
-                        options={{
-                            draggable: true,
-                            edge: "left",
-                            inDuration: 250,
-                            outDuration: 200,
-                            preventScrolling: true,
-                        }}
-                    >
-                        <NavLink exact activeClassName='active' to='/'>
-                            Home
+
+    return (
+        <div>
+            <header>
+                <Navbar
+                    alignLinks='right'
+                    brand={
+                        <a className='brand-logo' href='/'>
+                            Logo
+                        </a>
+                    }
+                    id='mobile-nav'
+                    menuIcon={<Icon>menu</Icon>}
+                    options={{
+                        draggable: true,
+                        edge: "left",
+                        inDuration: 250,
+                        outDuration: 200,
+                        preventScrolling: true,
+                    }}
+                >
+                    <NavLink exact activeClassName='active' to='/'>
+                        Home
+                    </NavLink>
+                    {isUserLogged && (
+                        <NavLink
+                            exact
+                            activeClassName='active'
+                            to='/list-events'
+                        >
+                            List Events
                         </NavLink>
-                        {this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/list-events'
-                            >
-                                List Events
-                            </NavLink>
-                        )}
-                        {this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/my-events'
-                            >
-                                My Events
-                            </NavLink>
-                        )}
-                        {this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/add-event'
-                            >
-                                Add Event
-                            </NavLink>
-                        )}
-                        {this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/calendar'
-                            >
-                                Calendar
-                            </NavLink>
-                        )}
-                        {!this.props.isUserLogged && (
-                            <NavLink exact activeClassName='active' to='/login'>
-                                Login
-                            </NavLink>
-                        )}
-                        {!this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/sign-in'
-                            >
-                                Sign In
-                            </NavLink>
-                        )}
-                        {this.props.isUserLogged && (
-                            <NavLink
-                                exact
-                                activeClassName='active'
-                                to='/logout'
-                            >
-                                Logout
-                            </NavLink>
-                        )}
-                    </Navbar>
-                    <hr />
-                </header>
-                <main className='container'>
-                    <Switch>
-                        <Route exact path='/' component={Home} />
-                        <Route exact path='/login'>
-                            <LogInForm />
-                        </Route>
-                        <Route exact path='/sign-in'>
-                            <SignInForm />
-                        </Route>
-                        <Route exact path='/add-event'>
-                            <AddEventForm />
-                        </Route>
-                        <Route exact path='/list-events'>
-                            <ListEvents />
-                        </Route>
-                        <Route exact path='/my-events'>
-                            <MyEvents />
-                        </Route>
-                        <Route exact path='/calendar'>
-                            <Calendar />
-                        </Route>
-                        <Route
-                            path='/logout'
-                            render={() => {
-                                this.props.logOut();
-                                return <Redirect to='/' />;
-                            }}
-                        />
-                    </Switch>
-                </main>
-                <footer></footer>
-            </div>
-        );
-    }
-}
+                    )}
+                    {isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/my-events'>
+                            My Events
+                        </NavLink>
+                    )}
+                    {isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/add-event'>
+                            Add Event
+                        </NavLink>
+                    )}
+                    {isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/calendar'>
+                            Calendar
+                        </NavLink>
+                    )}
+                    {!isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/login'>
+                            Login
+                        </NavLink>
+                    )}
+                    {!isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/sign-in'>
+                            Sign In
+                        </NavLink>
+                    )}
+                    {isUserLogged && (
+                        <NavLink exact activeClassName='active' to='/logout'>
+                            Logout
+                        </NavLink>
+                    )}
+                </Navbar>
+                <hr />
+            </header>
+            <main className='container'>
+                <Switch>
+                    <Route exact path='/'>
+                        <Home />
+                    </Route>
+                    <NotLoggedInRoute
+                        exact
+                        path='/login'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <LogInForm />
+                    </NotLoggedInRoute>
+                    <NotLoggedInRoute
+                        exact
+                        path='/sign-in'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <SignInForm />
+                    </NotLoggedInRoute>
+                    <PrivateRoute
+                        exact
+                        path='/my-events'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <MyEvents />
+                    </PrivateRoute>
+                    <PrivateRoute
+                        exact
+                        path='/list-events'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <ListEvents />
+                    </PrivateRoute>
+                    <PrivateRoute
+                        exact
+                        path='/add-event'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <AddEventForm />
+                    </PrivateRoute>
+                    <PrivateRoute
+                        exact
+                        path='/calendar'
+                        isAuthenticated={isUserLogged}
+                    >
+                        <Calendar />
+                    </PrivateRoute>
+                    <Route
+                        path='/logout'
+                        render={() => {
+                            logOut();
+                            return <Redirect to='/' />;
+                        }}
+                    />
+                </Switch>
+            </main>
+            <footer></footer>
+        </div>
+    );
+};
 
 /**
  * Maps state variables to properties of the component
