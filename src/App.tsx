@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Route, Switch, Redirect, NavLink } from "react-router-dom";
 import Home from "./containers/home/Home";
@@ -13,11 +14,11 @@ import Calendar from "./containers/calendar/Calendar";
 
 /**
  * Mapps dispatch actions to properties of the component
- * @param {Function} dispatch The function that will pass
+ * @param {Dispatch<S>} dispatch The function that will pass
  * the action to the store
  * @return {any} a map object to the new properties
  */
-function mapDispatchToProps(dispatch: Function) {
+function mapDispatchToProps(dispatch: any) {
     return {
         logOut: () => dispatch(clearUser()),
     };

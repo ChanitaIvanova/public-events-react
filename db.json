@@ -41,26 +41,14 @@
       "time": 23400
     },
     {
-      "id": 4,
-      "name": "Game",
-      "game": "Game",
-      "city": "Sofia",
-      "address": "Sofia",
-      "date": "2020-08-21",
-      "slots": "6",
-      "freeSlots": 6,
-      "owner": 1,
-      "time": 32400
-    },
-    {
       "id": 5,
-      "name": "Game",
+      "name": "Game edi",
       "game": "Game",
       "city": "Sofia",
       "address": "Sofia",
       "date": "2020-08-26",
-      "slots": "8",
-      "freeSlots": 8,
+      "slots": "10",
+      "freeSlots": 10,
       "owner": 1,
       "time": 75600
     },
@@ -85,6 +73,18 @@
       "time": 14400,
       "slots": "11",
       "freeSlots": 11,
+      "owner": 1
+    },
+    {
+      "id": 8,
+      "name": "Game",
+      "game": "Game",
+      "city": "Sofia",
+      "address": "Sofia",
+      "date": "2020-08-24",
+      "time": 21600,
+      "slots": "6",
+      "freeSlots": "6",
       "owner": 1
     }
   ]
