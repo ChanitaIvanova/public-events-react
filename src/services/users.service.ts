@@ -1,18 +1,15 @@
 import { baseUrl } from "../config";
 import {
     logOut,
-    logIn,
     requestAddUser,
     requestAddUserSucess,
     requestAddUserFailed,
-    requestLogInUser,
 } from "../actions/user/UserActions";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
 import cookie from "js-cookie";
 
-export const addUser = (user: User) => (dispatch: any) => {
-    dispatch(requestAddUser());
+export const addUser = (user: User) => {
     return fetch(baseUrl + "users", {
         method: "POST",
         body: JSON.stringify(user),
@@ -22,7 +19,6 @@ export const addUser = (user: User) => (dispatch: any) => {
     })
         .then((response) => {
             if (response.ok) {
-                dispatch(requestAddUserSucess());
                 return true;
             } else {
                 const error = new Error(
@@ -32,16 +28,12 @@ export const addUser = (user: User) => (dispatch: any) => {
             }
         })
         .catch((error) => {
-            dispatch(requestAddUserFailed());
             console.error(error.message);
             return false;
         });
 };
 
-export const loginUser = (email: string, password: string) => (
-    dispatch: any
-) => {
-    dispatch(requestLogInUser());
+export const loginUser = (email: string, password: string) => {
     const searchUrl =
         baseUrl +
         "users?email=" +
@@ -53,7 +45,6 @@ export const loginUser = (email: string, password: string) => (
     })
         .then((response) => {
             if (response.ok) {
-                dispatch(requestAddUserSucess());
                 return response;
             } else {
                 const error = new Error(
@@ -69,16 +60,15 @@ export const loginUser = (email: string, password: string) => (
                 throw error;
             }
             cookie.set("user-id", users[0].id);
-            return dispatch(logIn(users[0]));
+            return users[0];
         })
         .catch((error) => {
-            dispatch(requestAddUserFailed());
             console.error(error.message);
-            return false;
+            return null;
         });
 };
 
-export const getUser = () => (dispatch: any) => {
+export const getUser = () => {
     const userId = cookie.get("user-id");
     if (!userId) {
         return;
@@ -102,11 +92,11 @@ export const getUser = () => (dispatch: any) => {
                 const error = new Error("Error: No user was found");
                 throw error;
             }
-            return dispatch(logIn(user));
+            return user;
         })
         .catch((error) => {
             console.error(error.message);
-            return false;
+            return null;
         });
 };
 

@@ -1,7 +1,7 @@
 // eslint-disable-next-line no-unused-vars
 import React, { FormEvent, ChangeEvent, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import { addUser } from "../../services/users.service";
+import { requestAddUser } from "../../actions/user/UserActions";
 import { User } from "../../types/User";
 import { useDispatch } from "react-redux";
 
@@ -28,7 +28,7 @@ const SignInForm = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        dispatch(addUser(user));
+        dispatch(requestAddUser(user));
         setUser(new SignInUser());
     };
 

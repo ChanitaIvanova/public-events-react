@@ -11,8 +11,8 @@ import {
 // eslint-disable-next-line no-unused-vars
 import { User } from "../../types/User";
 
-export const requestAddUser = () => {
-    return { type: REQUEST_ADD_USER };
+export const requestAddUser = (user: User) => {
+    return { type: REQUEST_ADD_USER, user };
 };
 
 export const requestAddUserSucess = () => {
@@ -23,8 +23,8 @@ export const requestAddUserFailed = () => {
     return { type: REQUEST_ADD_USER_FAILED };
 };
 
-export const requestLogInUser = () => {
-    return { type: REQUEST_LOGIN_USER };
+export const requestLogInUser = (email: string, password: string) => {
+    return { type: REQUEST_LOGIN_USER, email, password };
 };
 
 export const logIn = (user: User) => {

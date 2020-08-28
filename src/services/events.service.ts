@@ -40,7 +40,7 @@ export const addEvent = (event: GameEvent) => (dispatch: any) => {
         });
 };
 
-export const fetchEvents = () => (dispatch: any) => {
+export const fetchEvents = () => {
     return fetch(baseUrl + "events", {
         method: "GET",
     })
@@ -55,10 +55,9 @@ export const fetchEvents = () => (dispatch: any) => {
             }
         })
         .then((response) => response.json())
-        .then((events) => dispatch(addGameEvents(events)))
         .catch((error: Error) => {
             console.error(error.message);
-            return false;
+            return null;
         });
 };
 

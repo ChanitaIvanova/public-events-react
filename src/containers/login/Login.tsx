@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { FormEvent, ChangeEvent, useState } from "react";
 import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
-import { loginUser } from "../../services/users.service";
+import { requestLogInUser } from "../../actions/user/UserActions";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // eslint-disable-next-line no-unused-vars
@@ -25,7 +25,7 @@ const LogInForm = () => {
 
     const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        dispatch(loginUser(loginData.email, loginData.password));
+        dispatch(requestLogInUser(loginData.email, loginData.password));
     };
 
     const handleChange = (event: ChangeEvent<any>) => {

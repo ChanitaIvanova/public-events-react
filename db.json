@@ -24,6 +24,15 @@
         2
       ],
       "repeatPassword": "2"
+    },
+    {
+      "id": 3,
+      "firstName": "Chanita",
+      "lastName": "Ivanova",
+      "email": "chanita.ivanova@musala.com",
+      "password": "4",
+      "events": [],
+      "repeatPassword": "4"
     }
   ],
   "events": [
