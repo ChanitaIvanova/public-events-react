@@ -8,6 +8,8 @@ import {
     REQUEST_ADD_USER_SUCESS,
     REQUEST_ADD_USER_FAILED,
     REQUEST_LOGIN_USER,
+    REQUEST_USER_DATA,
+    USER_DATA_RETRIEVED,
 } from "../actions/ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../types/User";
@@ -31,6 +33,16 @@ const setupUser = (
                 ...userState,
                 isUserLogged: true,
                 loggedInUser: action.payload,
+            };
+        case REQUEST_USER_DATA:
+            return {
+                ...userState,
+                retrievingData: true,
+            };
+        case USER_DATA_RETRIEVED:
+            return {
+                ...userState,
+                retrievingData: false,
             };
         case LOG_OUT:
             return Object.assign({}, userState, {

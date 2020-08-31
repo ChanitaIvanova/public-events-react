@@ -1,6 +1,7 @@
-interface Header {
+export interface Header {
     key: string;
     name: string;
+    isComponent?: boolean;
 }
 
 export interface HeaderData {

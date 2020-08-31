@@ -53,9 +53,9 @@ const headerData: HeaderData = {
     ],
 };
 
-const mapStateToProps = ({ events, userState }: State) => {
+const mapStateToProps = ({ eventsState, userState }: State) => {
     return {
-        contentData: events
+        contentData: eventsState.events
             .filter((event: GameEvent) => {
                 const userEvent = userState.loggedInUser?.events.find(
                     (id: number) => {

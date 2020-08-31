@@ -11,7 +11,7 @@ const EventInfoContainer = ({ eventId }: any) => {
     const dispatch = useDispatch();
     const user = useSelector((state: State) => state.userState.loggedInUser);
     const event = useSelector((state: State) => {
-        return state.events.find((event) => {
+        return state.eventsState.events.find((event) => {
             return event.id.toString() === eventId;
         });
     });

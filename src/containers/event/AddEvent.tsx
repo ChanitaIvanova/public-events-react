@@ -1,31 +1,15 @@
 // eslint-disable-next-line no-unused-vars
-import React, { useReducer, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import { GameEvent } from "../../types/GameEvent";
 import { useDispatch, useSelector } from "react-redux";
 import EventForm from "./EventForm";
 import { addEvent } from "../../services/events.service";
 // eslint-disable-next-line no-unused-vars
 import { State } from "../../reducers/initialState";
-
-/**
- * Apply different changes on the state
- * @param {GameEvent} state the current state
- * @param {any} action action that will be applied on the state
- * @return {GameEvcent} returns the new state
- */
-function reducer(state: GameEvent, action: { type: string; payload?: any }) {
-    switch (action.type) {
-        case "updateState":
-            return { ...state, [action.payload.name]: action.payload.value };
-        case "clearState":
-            const newState = new GameEvent();
-            return newState;
-        default:
-            return state;
-    }
-}
-
-const AddEventForm = ({ event }: any) => {
+import { reduxForm } from "redux-form";
+import { useRouteMatch } from "react-router-dom";
+const AddEventForm = () => {
+    const match = useRouteMatch("/edit-event/:id");
     const dispatch = useDispatch();
     const isUserLogged = useSelector(
         (state: State) => state.userState.isUserLogged
@@ -33,36 +17,35 @@ const AddEventForm = ({ event }: any) => {
     const loggedInUser = useSelector(
         (state: State) => state.userState.loggedInUser
     );
-    let initialState;
-    if (event) {
-        initialState = event;
-    } else {
-        initialState = new GameEvent();
-        initialState.owner = loggedInUser?.id;
-    }
-    const [gameEvent, setGameEvent] = useReducer(reducer, initialState);
 
-    const handleSubmit = () => {
-        dispatch(addEvent(gameEvent));
-        setGameEvent({ type: "clearState" });
-    };
+    const initialState = new GameEvent();
+    initialState.owner = loggedInUser?.id;
+    const [gameEvent, setGameEvent] = useState(initialState);
+    const [displayForm, setDisplayForm] = useState(false);
 
-    const handleChange = (event: ChangeEvent<any>) => {
-        const elementName = event.target.id;
-        const nameParts = elementName.split("_");
-        const name = nameParts[0];
-        if (name === "slots") {
-            event.target.value = parseInt(event.target.value);
-            setGameEvent({
-                type: "updateState",
-                payload: { name: "freeSlots", value: event.target.value },
-            });
-        }
-        setGameEvent({
-            type: "updateState",
-            payload: { name: name, value: event.target.value },
+    const events = useSelector((state: State) => state.eventsState.events);
+    const id = match ? parseInt((match?.params as any).id) : -1;
+    useEffect(() => {
+        const event = events.find((event) => {
+            return event.id === id;
         });
+
+        if (event) {
+            setGameEvent(event);
+        }
+        setDisplayForm(true);
+    }, []);
+
+    const handleSubmit = (newEvent: any) => {
+        newEvent.slots = parseInt(newEvent.slots);
+        newEvent.freeSlots = newEvent.slots;
+        dispatch(addEvent(newEvent));
     };
+
+    const GameEventForm = reduxForm({
+        // a unique name for the form
+        form: "gameEventForm",
+    })(EventForm);
 
     if (!isUserLogged) {
         return <div>Please log in!</div>;
@@ -71,12 +54,14 @@ const AddEventForm = ({ event }: any) => {
     return (
         <div className='AddEvent'>
             <h1>Add Event</h1>
-            <EventForm
-                gameEvent={gameEvent}
-                displaySubmit={true}
-                onSubmit={handleSubmit}
-                onChange={handleChange}
-            ></EventForm>
+            {displayForm && (
+                <GameEventForm
+                    initialValues={gameEvent}
+                    gameEvent={gameEvent}
+                    displaySubmit={true}
+                    onSubmit={handleSubmit}
+                ></GameEventForm>
+            )}
         </div>
     );
 };

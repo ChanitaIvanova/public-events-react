@@ -6,17 +6,27 @@ export interface UserState {
     isUserLogged: boolean;
     loggedInUser: User | undefined;
     isRequestPending: boolean;
+    retrievingData: boolean;
+}
+
+export interface EventsState {
+    events: GameEvent[];
+    retrievingData: boolean;
 }
 export interface State {
-    events: GameEvent[];
+    eventsState: EventsState;
     userState: UserState;
 }
 export const initialState: State = {
-    events: [],
+    eventsState: {
+        events: [],
+        retrievingData: true,
+    },
     userState: {
         users: [],
         isUserLogged: false,
         loggedInUser: undefined,
         isRequestPending: false,
+        retrievingData: true,
     },
 };

@@ -1,6 +1,6 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
-import TableData from "./table.interfaces";
+import TableData, { Header } from "./table.interfaces";
 
 const Table = ({ headerData, contentData }: TableData) => {
     if (contentData.length === 0) {
@@ -14,7 +14,16 @@ const Table = ({ headerData, contentData }: TableData) => {
         );
     }
     const tableRows = contentData.map((data: any) => {
-        const rowData = headerData.headers.map((header: any) => {
+        const rowData = headerData.headers.map((header: Header) => {
+            if (header.isComponent) {
+                const Component = data[header.key]["component"];
+                const props = data[header.key]["props"];
+                return (
+                    <td key={header.key + data.id}>
+                        <Component {...props}></Component>
+                    </td>
+                );
+            }
             // eslint-disable-next-line react/jsx-key
             return <td key={header.key + data.id}>{data[header.key]}</td>;
         });

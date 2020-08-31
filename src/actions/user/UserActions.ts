@@ -7,6 +7,8 @@ import {
     REQUEST_ADD_USER_FAILED,
     REQUEST_LOGIN_USER,
     FREE_SLOT,
+    REQUEST_USER_DATA,
+    USER_DATA_RETRIEVED,
 } from "../ActionTypes";
 // eslint-disable-next-line no-unused-vars
 import { User } from "../../types/User";
@@ -25,6 +27,14 @@ export const requestAddUserFailed = () => {
 
 export const requestLogInUser = (email: string, password: string) => {
     return { type: REQUEST_LOGIN_USER, email, password };
+};
+
+export const requestUserData = () => {
+    return { type: REQUEST_USER_DATA };
+};
+
+export const userDataRetrieved = () => {
+    return { type: USER_DATA_RETRIEVED };
 };
 
 export const logIn = (user: User) => {

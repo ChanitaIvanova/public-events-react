@@ -24,7 +24,7 @@ function mapDispatchToProps(dispatch: any) {
     };
 }
 
-const AppComponent = ({ isUserLogged, logOut }: any) => {
+const AppComponent = ({ isUserLogged, retrievingData, logOut }: any) => {
     const PrivateRoute = ({ children, isAuthenticated, ...rest }: any) => {
         return (
             <Route
@@ -136,60 +136,63 @@ const AppComponent = ({ isUserLogged, logOut }: any) => {
                 <hr />
             </header>
             <main className='container'>
-                <Switch>
-                    <Route exact path='/'>
-                        <Home />
-                    </Route>
-                    <NotLoggedInRoute
-                        exact
-                        path='/login'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <LogInForm />
-                    </NotLoggedInRoute>
-                    <NotLoggedInRoute
-                        exact
-                        path='/sign-in'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <SignInForm />
-                    </NotLoggedInRoute>
-                    <PrivateRoute
-                        exact
-                        path='/my-events'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <MyEvents />
-                    </PrivateRoute>
-                    <PrivateRoute
-                        exact
-                        path='/list-events'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <ListEvents />
-                    </PrivateRoute>
-                    <PrivateRoute
-                        exact
-                        path='/add-event'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <AddEventForm />
-                    </PrivateRoute>
-                    <PrivateRoute
-                        exact
-                        path='/calendar'
-                        isAuthenticated={isUserLogged}
-                    >
-                        <Calendar />
-                    </PrivateRoute>
-                    <Route
-                        path='/logout'
-                        render={() => {
-                            logOut();
-                            return <Redirect to='/' />;
-                        }}
-                    />
-                </Switch>
+                {retrievingData && <div>Loading...</div>}
+                {!retrievingData && (
+                    <Switch>
+                        <Route exact path='/'>
+                            <Home />
+                        </Route>
+                        <NotLoggedInRoute
+                            exact
+                            path='/login'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <LogInForm />
+                        </NotLoggedInRoute>
+                        <NotLoggedInRoute
+                            exact
+                            path='/sign-in'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <SignInForm />
+                        </NotLoggedInRoute>
+                        <PrivateRoute
+                            exact
+                            path='/my-events'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <MyEvents />
+                        </PrivateRoute>
+                        <PrivateRoute
+                            exact
+                            path='/list-events'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <ListEvents />
+                        </PrivateRoute>
+                        <PrivateRoute
+                            exact
+                            path='/add-event'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <AddEventForm />
+                        </PrivateRoute>
+                        <PrivateRoute
+                            exact
+                            path='/calendar'
+                            isAuthenticated={isUserLogged}
+                        >
+                            <Calendar />
+                        </PrivateRoute>
+                        <Route
+                            path='/logout'
+                            render={() => {
+                                logOut();
+                                return <Redirect to='/' />;
+                            }}
+                        />
+                    </Switch>
+                )}
             </main>
             <footer></footer>
         </div>
@@ -202,8 +205,11 @@ const AppComponent = ({ isUserLogged, logOut }: any) => {
  * @return {any} object that describes the new properties passed
  * to the component.
  */
-function mapStateToProps({ userState }: any) {
-    return { isUserLogged: userState.isUserLogged };
+function mapStateToProps({ userState, eventsState }: any) {
+    return {
+        isUserLogged: userState.isUserLogged,
+        retrievingData: userState.retrievingData || eventsState.retrievingData,
+    };
 }
 
 const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);

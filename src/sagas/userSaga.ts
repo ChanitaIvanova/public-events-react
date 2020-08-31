@@ -7,16 +7,20 @@ import {
     logIn,
     requestAddUserFailed,
     requestAddUserSucess,
+    requestUserData,
+    userDataRetrieved,
 } from "../actions/user/UserActions";
 
 /**
  * Retrives the user data from the backend and saves it in the state
  */
 export function* getUserGen() {
+    yield put(requestUserData());
     const user = yield call(getUser);
     if (user) {
         yield put(logIn(user));
     }
+    yield put(userDataRetrieved());
 }
 
 /**

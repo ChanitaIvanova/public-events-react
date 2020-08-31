@@ -15,7 +15,7 @@ const renderEventContent = (eventInfo: any) => {
 
 const Calendar = () => {
     const user = useSelector((state: State) => state.userState.loggedInUser);
-    const events = useSelector((state: State) => state.events);
+    const events = useSelector((state: State) => state.eventsState.events);
 
     const eventsForUser = events
         .filter((event) => {

@@ -28,3 +28,11 @@ export const deleteGameEvent = (eventId: number) => {
 export const editGameEvent = (gameEvent: GameEvent) => {
     return { type: types.EDIT_EVENT, payload: gameEvent };
 };
+
+export const requestGameEventData = () => {
+    return { type: types.REQUEST_GAME_EVENTS_DATA };
+};
+
+export const gameEeventDataRetrieved = () => {
+    return { type: types.GAME_EVENTS_DATA_RETRIEVED };
+};

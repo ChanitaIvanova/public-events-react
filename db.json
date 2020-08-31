@@ -31,7 +31,9 @@
       "lastName": "Ivanova",
       "email": "chanita.ivanova@musala.com",
       "password": "4",
-      "events": [],
+      "events": [
+        8
+      ],
       "repeatPassword": "4"
     }
   ],
@@ -93,8 +95,20 @@
       "date": "2020-08-24",
       "time": 21600,
       "slots": "6",
-      "freeSlots": "6",
+      "freeSlots": 5,
       "owner": 1
+    },
+    {
+      "id": 9,
+      "name": "drfgdfg23",
+      "game": "dgdfg2345",
+      "city": "dfgdfg23",
+      "address": "dfgdfg23",
+      "date": "2020-09-02",
+      "time": 23400,
+      "slots": 7,
+      "freeSlots": 7,
+      "owner": 3
     }
   ]
 }

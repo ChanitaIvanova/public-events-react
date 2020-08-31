@@ -4,17 +4,32 @@ import { useDispatch } from "react-redux";
 import M from "materialize-css";
 import EventForm from "./EventForm";
 import { updateGameEvent } from "../../services/events.service";
+import { submit } from "redux-form";
+import { reduxForm } from "redux-form";
+import { State } from "../../reducers/initialState";
+import { GameEvent } from "../../types/GameEvent";
+import { useSelector } from "react-redux";
 
-const EditEvent = ({ event }: any) => {
+const EditEvent = ({ eventId }: any) => {
     const dispatch = useDispatch();
-    const [gameEvent, setGameEvent] = useState(event);
+    const [gameEvent, setGameEvent] = useState({});
+    const [displayForm, setDisplayForm] = useState(false);
     let modal: any;
+
+    const events = useSelector((state: State) => state.eventsState.events);
+    useEffect(() => {
+        const event = events.find((event) => {
+            return event.id === eventId;
+        });
+
+        if (event) {
+            setGameEvent(event);
+        }
+        setDisplayForm(true);
+    }, []);
 
     useEffect(() => {
         const options = {
-            onOpenStart: () => {
-                setGameEvent(event);
-            },
             inDuration: 250,
             outDuration: 250,
             opacity: 0.5,
@@ -24,46 +39,30 @@ const EditEvent = ({ event }: any) => {
         };
         // eslint-disable-next-line
         M.Modal.init(modal, options);
-    }, [event, modal]);
+    }, []);
 
-    const handleChange = (chageEvent: ChangeEvent<any>) => {
-        const elementName = chageEvent.target.id;
-        const nameParts = elementName.split("_");
-        const name = nameParts[0];
-        if (name === "slots") {
-            const slots = parseInt(chageEvent.target.value);
-            setGameEvent({
-                ...gameEvent,
-                freeSlots:
-                    parseInt(event.freeSlots) + (slots - parseInt(event.slots)),
-                slots: chageEvent.target.value,
-            });
-
-            return;
-        }
-        setGameEvent({ ...gameEvent, [name]: chageEvent.target.value });
+    const handleSubmit = (editedEvent) => {
+        editedEvent.slots = parseInt(editedEvent.slots);
+        editedEvent.freeSlots =
+            parseInt((gameEvent as any).freeSlots) +
+            (editedEvent.slots - parseInt((gameEvent as any).slots));
+        dispatch(updateGameEvent(editedEvent));
     };
 
-    const validateForm = () => {
-        const isValid: boolean =
-            gameEvent.name.length > 0 &&
-            gameEvent.game.length > 0 &&
-            gameEvent.city.length > 0 &&
-            gameEvent.address.length > 0 &&
-            parseInt(gameEvent.slots) > 0 &&
-            parseInt(gameEvent.slots) >= parseInt(event.slots);
-        return isValid;
-    };
+    const formName = "gameEventForm_" + eventId;
+    const GameEventForm = reduxForm({
+        // a unique name for the form
+        form: formName,
+    })(EventForm);
 
     const handleClick = () => {
-        dispatch(updateGameEvent(gameEvent));
+        dispatch(submit(formName));
     };
-
     return (
         <>
             <button
                 className='waves-effect waves-light btn modal-trigger'
-                data-target={"modal_" + gameEvent.id}
+                data-target={"modal_" + eventId}
             >
                 Edit
             </button>
@@ -72,7 +71,7 @@ const EditEvent = ({ event }: any) => {
                 ref={(Modal) => {
                     modal = Modal;
                 }}
-                id={"modal_" + gameEvent.id}
+                id={"modal_" + eventId}
                 className='modal'
             >
                 {/* If you want Bottom Sheet Modal then add 
@@ -81,18 +80,20 @@ const EditEvent = ({ event }: any) => {
                         modal-fixed-footer to the "modal" div*/}
                 <div className='modal-content'>
                     <h2>Edit Event</h2>
-                    <EventForm
-                        gameEvent={gameEvent}
-                        displaySubmit={false}
-                        onChange={handleChange}
-                    ></EventForm>
+                    {displayForm && (
+                        <GameEventForm
+                            initialValues={gameEvent}
+                            gameEvent={gameEvent}
+                            displaySubmit={false}
+                            onSubmit={handleSubmit}
+                        ></GameEventForm>
+                    )}
                 </div>
                 <div className='modal-footer'>
                     <button className='modal-close waves-effect waves-red btn-flat'>
                         Cancel
                     </button>
                     <button
-                        disabled={!validateForm()}
                         onClick={handleClick}
                         className='modal-close waves-effect waves-green btn'
                     >
