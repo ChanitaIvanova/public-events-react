@@ -4,6 +4,7 @@ import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import { requestAddUser } from "../../actions/user/UserActions";
 import { User } from "../../types/User";
 import { useDispatch } from "react-redux";
+import { Form, Field } from "react-final-form";
 
 /**
  * Extends the User class with additional field for repeat password
@@ -14,77 +15,99 @@ class SignInUser extends User {
 const SignInForm = () => {
     const [user, setUser] = useState(new SignInUser());
     const dispatch = useDispatch();
+    const required = (value) => (value ? undefined : "Required");
 
-    const validateForm = () => {
-        return (
-            user.email.length > 0 &&
-            user.password.length > 0 &&
-            user.repeatPassword.length > 0 &&
-            user.password === user.repeatPassword &&
-            user.firstName.length > 0 &&
-            user.lastName.length > 0
-        );
+    const validateForm = (values) => {
+        const errors: any = {};
+        if (values.password !== values.repeatPassword) {
+            errors.repeatPassword = "Passwords must match";
+        }
+
+        return errors;
     };
-
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault();
-        dispatch(requestAddUser(user));
+    const onSubmit = (newUser: any) => {
+        dispatch(requestAddUser(newUser));
         setUser(new SignInUser());
     };
 
-    const handleChange = (event: ChangeEvent<any>) => {
-        setUser({ ...user, [event.target.id]: event.target.value });
+    const FormField = ({ id, label, name, type, validate }: any) => {
+        return (
+            <div>
+                <Field name={name} validate={validate}>
+                    {({ input, meta }) => (
+                        <div>
+                            <label htmlFor={id}>{label}</label>
+                            <input
+                                {...input}
+                                id={id}
+                                type={type}
+                                placeholder={label}
+                            />
+                            {meta.error && meta.touched && (
+                                <span>{meta.error}</span>
+                            )}
+                        </div>
+                    )}
+                </Field>
+            </div>
+        );
     };
 
     return (
         <div>
             <h1>Sign In</h1>
-            <form onSubmit={handleSubmit}>
-                <FormGroup controlId='firstName'>
-                    <FormLabel>First Name</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type='text'
-                        value={user.firstName}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='lastName'>
-                    <FormLabel>Last Name</FormLabel>
-                    <FormControl
-                        type='text'
-                        value={user.lastName}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='email'>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl
-                        type='email'
-                        value={user.email}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='password'>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl
-                        value={user.password}
-                        onChange={handleChange}
-                        type='password'
-                    />
-                </FormGroup>
-                <FormGroup controlId='repeatPassword'>
-                    <FormLabel>Repeat Password</FormLabel>
-                    <FormControl
-                        value={user.repeatPassword}
-                        onChange={handleChange}
-                        type='password'
-                    />
-                </FormGroup>
-                <Button block disabled={!validateForm()} type='submit'>
-                    Sign In
-                </Button>
-            </form>
+            <Form
+                onSubmit={onSubmit}
+                validate={validateForm}
+                subscription={{ submitting: true, pristine: true }}
+                initialValues={user}
+                render={({ handleSubmit, submitting, pristine }) => (
+                    <form onSubmit={handleSubmit}>
+                        <FormField
+                            id='firstName'
+                            label='First Name'
+                            name='firstName'
+                            type='text'
+                            validate={required}
+                        />
+                        <FormField
+                            id='lastName'
+                            label='Last Name'
+                            name='lastName'
+                            type='text'
+                            validate={required}
+                        />
+                        <FormField
+                            id='email'
+                            label='Email'
+                            name='email'
+                            type='email'
+                            validate={required}
+                        />
+                        <FormField
+                            id='password'
+                            label='Password'
+                            name='password'
+                            type='password'
+                            validate={required}
+                        />
+                        <FormField
+                            id='repeatPassword'
+                            label='Repeat Password'
+                            name='repeatPassword'
+                            type='password'
+                            validate={required}
+                        />
+                        <Button
+                            block
+                            disabled={submitting || pristine}
+                            type='submit'
+                        >
+                            Sign In
+                        </Button>
+                    </form>
+                )}
+            />
         </div>
     );
 };

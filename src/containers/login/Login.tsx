@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
-import React, { FormEvent, ChangeEvent, useState } from "react";
-import { Button, FormGroup, FormControl, FormLabel } from "react-bootstrap";
+import React, { ChangeEvent, useState } from "react";
+import { Button } from "react-bootstrap";
 import { requestLogInUser } from "../../actions/user/UserActions";
 import { Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 // eslint-disable-next-line no-unused-vars
 import { State } from "../../reducers/initialState";
+import { Form, Field } from "react-final-form";
 
 const LogInForm = () => {
     const isUserLogged = useSelector(
         (state: State) => state.userState.isUserLogged
     );
     const dispatch = useDispatch();
+    const required = (value) => (value ? undefined : "Required");
     const initialState = {
         password: "",
         email: "",
@@ -19,17 +21,31 @@ const LogInForm = () => {
     };
     const [loginData, setLoginData] = useState(initialState);
 
-    const validateForm = () => {
-        return loginData.email.length > 0 && loginData.password.length > 0;
+    const onSubmit = (values: any) => {
+        dispatch(requestLogInUser(values.email, values.password));
     };
 
-    const handleSubmit = (event: FormEvent) => {
-        event.preventDefault();
-        dispatch(requestLogInUser(loginData.email, loginData.password));
-    };
-
-    const handleChange = (event: ChangeEvent<any>) => {
-        setLoginData({ ...loginData, [event.target.id]: event.target.value });
+    const FormField = ({ id, label, name, type, validate }: any) => {
+        return (
+            <div>
+                <Field name={name} validate={validate}>
+                    {({ input, meta }) => (
+                        <div>
+                            <label htmlFor={id}>{label}</label>
+                            <input
+                                {...input}
+                                id={id}
+                                type={type}
+                                placeholder={label}
+                            />
+                            {meta.error && meta.touched && (
+                                <span>{meta.error}</span>
+                            )}
+                        </div>
+                    )}
+                </Field>
+            </div>
+        );
     };
 
     if (isUserLogged) {
@@ -43,28 +59,36 @@ const LogInForm = () => {
                     There is no such user
                 </div>
             )}
-            <form onSubmit={handleSubmit}>
-                <FormGroup controlId='email'>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl
-                        autoFocus
-                        type='email'
-                        value={loginData.email}
-                        onChange={handleChange}
-                    />
-                </FormGroup>
-                <FormGroup controlId='password'>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl
-                        value={loginData.password}
-                        onChange={handleChange}
-                        type='password'
-                    />
-                </FormGroup>
-                <Button block disabled={!validateForm()} type='submit'>
-                    Login
-                </Button>
-            </form>
+            <Form
+                onSubmit={onSubmit}
+                subscription={{ submitting: true, pristine: true }}
+                initialValues={loginData}
+                render={({ handleSubmit, submitting, pristine }) => (
+                    <form onSubmit={handleSubmit}>
+                        <FormField
+                            id='email'
+                            label='Email'
+                            name='email'
+                            type='email'
+                            validate={required}
+                        />
+                        <FormField
+                            id='password'
+                            label='Password'
+                            name='password'
+                            type='password'
+                            validate={required}
+                        />
+                        <Button
+                            block
+                            disabled={submitting || pristine}
+                            type='submit'
+                        >
+                            Login
+                        </Button>
+                    </form>
+                )}
+            />
         </div>
     );
 };

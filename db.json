@@ -35,6 +35,51 @@
         8
       ],
       "repeatPassword": "4"
+    },
+    {
+      "id": 4,
+      "firstName": "тест",
+      "lastName": "тест",
+      "email": "chanita.ivanova@gmail.com",
+      "password": "5",
+      "events": [],
+      "repeatPassword": "5"
+    },
+    {
+      "id": 5,
+      "firstName": "тест 2",
+      "lastName": "тест 2",
+      "email": "chanita.ivanova@gmail.com",
+      "password": "6",
+      "events": [],
+      "repeatPassword": "6"
+    },
+    {
+      "id": 6,
+      "firstName": "тест 3",
+      "lastName": "тест 3",
+      "email": "chanita.ivanova@gmail.com",
+      "password": "7",
+      "events": [],
+      "repeatPassword": "7"
+    },
+    {
+      "id": 7,
+      "firstName": "Chanita",
+      "lastName": "Ivanova",
+      "email": "chanita.ivanova@gmail.com",
+      "events": [],
+      "repeatPassword": "2",
+      "password": "2"
+    },
+    {
+      "id": 8,
+      "lastName": "Ivanova",
+      "email": "chanita.ivanova@gmail.com",
+      "password": "7",
+      "events": [],
+      "repeatPassword": "7",
+      "firstName": "Chanita"
     }
   ],
   "events": [
